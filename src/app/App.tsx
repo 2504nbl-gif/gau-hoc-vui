@@ -20,6 +20,7 @@ import { StickerBook } from '@/features/rewards/StickerBook';
 import { Fireworks } from '@/components/game/Fireworks';
 import { RewardLayer } from '@/features/rewards/RewardLayer';
 import { FamilyPhotos } from '@/features/family/FamilyPhotos';
+import { TalkingBear } from '@/features/talking/TalkingBear';
 import { useFamilyStore } from '@/store/useFamilyStore';
 import { useEffect } from 'react';
 
@@ -48,6 +49,7 @@ export function App() {
       <Fireworks />
       <RewardLayer />
       {route.name === 'family-photos' && <FamilyPhotos />}
+      {route.name === 'talking-bear' && <TalkingBear />}
       <RotateHint />
     </>
   );

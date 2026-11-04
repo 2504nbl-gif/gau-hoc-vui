@@ -96,6 +96,19 @@ export const PHRASES = {
   smallHouse: 'Nhà nhỏ',
   momBabyHint: 'Bé đưa con về với mẹ nhé!',
   montessoriNames: MONTESSORI_NAMES,
+  // Gấu biết nói (màn chơi tự do: nhại giọng, chạm, chăm sóc)
+  talkingBear: 'Gấu biết nói',
+  bearHello: 'Chào bạn! Bạn nói gì, Gấu nói theo nhé!',
+  bearNeedMic: 'Nhờ bố mẹ bật micro cho Gấu nhé!',
+  bearHungry: 'Gấu đói bụng rồi!',
+  bearYummy: 'Măm măm, ngon quá!',
+  bearThirsty: 'Gấu muốn uống sữa!',
+  bearMilk: 'Ực ực, sữa ngon quá!',
+  bearBath: 'Mình đi tắm nào!',
+  bearBathDone: 'Tắm xong thơm phức!',
+  bearSleepy: 'Gấu buồn ngủ quá…',
+  bearGoodNight: 'Chúc Gấu ngủ ngon!',
+  bearWake: 'Gấu dậy rồi!',
 } as const;
 
 /** Tên các trò chơi (đọc khi bé chạm vào). Được điền thêm từ danh sách trò chơi. */

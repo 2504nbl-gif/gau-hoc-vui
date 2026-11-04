@@ -24,7 +24,6 @@ export function Dashboard() {
   const go = useNav((s) => s.go);
   const name = useProgressStore((s) => s.childName);
   const stickerCount = useRewardStore((s) => s.stickers.length);
-  const dance = useRewardStore((s) => s.dance);
   const [toast, setToast] = useState<string | null>(null);
 
   const open = (m: ModuleDef) => {
@@ -66,8 +65,8 @@ export function Dashboard() {
 
       <section className="relative z-10 flex min-h-0 flex-1 flex-wrap items-center justify-center gap-6">
         <button
-          aria-label="Xem Gấu nhảy múa"
-          onClick={() => { sfx.select(); dance(); }}
+          aria-label={PHRASES.talkingBear}
+          onClick={() => { sfx.select(); go({ name: 'talking-bear' }); }}
           className="w-[clamp(110px,17vw,180px)] [animation:bob_3s_ease-in-out_infinite]"
         >
           <BearMascot className="block w-full" />

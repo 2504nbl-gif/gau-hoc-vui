@@ -19,6 +19,7 @@ export type Route = (
   | { name: 'parent' }
   | { name: 'sticker-book' }
   | { name: 'family-photos' }
+  | { name: 'talking-bear' }
 ) & {
   /** Mở từ "Bài học hôm nay": mọi lối thoát của hoạt động này đều quay về đường đi. */
   fromDaily?: boolean;

@@ -84,12 +84,17 @@ export interface Segment {
   ended: Promise<void>;
 }
 
-/** Phát một đoạn [offset, offset+duration] của buffer qua kênh giọng đọc. */
-export function playSegment(buf: AudioBuffer, offset: number, duration: number): Segment {
+/**
+ * Phát một đoạn [offset, offset+duration] của buffer qua kênh giọng đọc.
+ * `rate` = tốc độ/cao độ phát (Gấu nhại giọng dùng ~1.5); `tap` = nút nghe trộm tín hiệu (vd AnalyserNode để mấp máy miệng).
+ */
+export function playSegment(buf: AudioBuffer, offset: number, duration: number, opts: { rate?: number; tap?: AudioNode } = {}): Segment {
   const c = audioCtx()!;
   const src = c.createBufferSource();
   src.buffer = buf;
+  if (opts.rate) src.playbackRate.value = opts.rate;
   src.connect(voiceBus!);
+  if (opts.tap) src.connect(opts.tap);
   const startedAt = c.currentTime;
   src.start(startedAt, offset, duration);
   voicePlaying++;

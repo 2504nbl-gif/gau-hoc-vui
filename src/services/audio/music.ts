@@ -31,7 +31,13 @@ let step = 0;
 
 function targetGain() {
   if (!enabled || muted || document.hidden) return 0;
-  return level * MAX_GAIN * (isSpeaking() ? DUCK : 1);
+  return level * MAX_GAIN * (isSpeaking() || ducked ? DUCK : 1);
+}
+
+let ducked = false;
+/** Hạ nhỏ nhạc nền theo yêu cầu (vd Gấu biết nói đang mở micro nghe bé). */
+export function duckMusic(on: boolean) {
+  ducked = on;
 }
 
 /** Xếp lịch trước ~1 giây, chạy lại mỗi 150 ms (kiểu "lookahead scheduler"). */

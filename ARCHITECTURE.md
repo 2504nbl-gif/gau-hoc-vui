@@ -52,6 +52,8 @@ src/
 ├─ features/art/                Tô hình theo nét, Tô màu tranh, Vẽ tự do, Bộ sưu tập (IndexedDB)
 ├─ features/music/              Đàn piano, Kéo nốt nhạc (+ Tiếng gì đây? trong cognitive/choiceGames)
 ├─ features/math/               Làm quen số 0–9 (3 bước), So sánh; Đếm trứng, Số thiếu, Chậu hoa ở choiceGames
+├─ features/talking/            Gấu biết nói: nhại giọng (services/audio/voiceChanger.ts, chỉ giữ trong bộ nhớ), chạm phản ứng, chăm sóc;
+│                               nhân vật gấu dùng chung: components/content/BearCharacter.tsx (DancingBear = tư thế 'dance')
 ├─ features/montessori/         Trò kéo thả cho bé 2 tuổi: Phân loại màu, To và nhỏ, Mẹ và con (dữ liệu: data/montessori.ts)
 ├─ features/parent/             Góc phụ huynh: ParentGate (ổ khóa + phép nhân bằng chữ), ParentCorner (báo cáo, cài đặt),
 │                               AppSession (áp cài đặt âm thanh, đếm phút chơi, tắt nhạc ở trò âm nhạc), Bedtime (hết giờ)
