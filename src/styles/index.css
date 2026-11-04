@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+/* Bảng màu & chữ của app. Một giao diện sáng duy nhất, chủ ý cho trẻ nhỏ (không có chế độ tối). */
+@theme {
+  --font-display: "Baloo 2", "Nunito", system-ui, sans-serif;
+  --font-body: "Nunito", system-ui, sans-serif;
+
+  --color-ink: #2b3a4f;
+  --color-soft: #68788e;
+  --color-line: #e3ebf2;
+  --color-paper: #ffffff;
+  --color-cloud: #f3fbff;
+  --color-air: #d6efff;
+  --color-grass: #a8da72;
+  --color-grass-deep: #8fcb5c;
+
+  --color-coral: #ee7c5f;
+  --color-leaf: #4db463;
+  --color-sea: #4b9cef;
+  --color-sun: #f2b23a;
+  --color-teal: #2bb0a3;
+  --color-grape: #8d71e8;
+  --color-berry: #e0547b;
+  --color-sky: #38b6e8;
+  --color-peach: #f08a3c;
+  --color-doman: #d93a3a; /* đỏ thẻ chữ Glenn Doman */
+}
+
+@layer base {
+  html { height: 100%; box-sizing: border-box; }
+  body {
+    height: 100%; margin: 0; overflow: hidden;
+    background: var(--color-cloud); color: var(--color-ink);
+    font-family: var(--font-body); color-scheme: light;
+    -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent;
+  }
+  #root { height: 100%; }
+  button { cursor: pointer; }
+  button:focus-visible { outline: 3px solid var(--color-sea); outline-offset: 3px; }
+}
+
+@layer components {
+  /* Màn hình trong: nền nhạt theo màu module (--c). */
+  .room {
+    height: 100%; display: flex; flex-direction: column; gap: 12px;
+    padding-block: 12px;
+    padding-left: max(20px, env(safe-area-inset-left, 0px));
+    padding-right: max(20px, env(safe-area-inset-right, 0px));
+    background: color-mix(in srgb, var(--c) 12%, white);
+  }
+  /* Nút nổi 3D: lún xuống khi bấm. */
+  .press {
+    background: var(--c); color: white;
+    box-shadow: 0 5px 0 color-mix(in srgb, var(--c) 68%, black);
+    transition: transform .08s, box-shadow .08s;
+  }
+  .press:active { transform: translateY(4px); box-shadow: 0 1px 0 color-mix(in srgb, var(--c) 68%, black); }
+  .press-ghost { background: white; color: var(--color-ink); box-shadow: 0 5px 0 var(--color-line); transition: transform .08s; }
+  .press-ghost:active { transform: translateY(4px); box-shadow: none; }
+  .title-c { color: color-mix(in srgb, var(--c) 78%, black); }
+
+  .hex { clip-path: polygon(25% 2%, 75% 2%, 100% 50%, 75% 98%, 25% 98%, 0 50%); }
+  .tint { background: color-mix(in srgb, var(--c) 22%, white); }
+
+  /* Kẹp hồ sơ vàng cho chủ đề tráo thẻ */
+  .folder { position: relative; background: #f3b840; border-radius: 8px 20px 20px 20px; box-shadow: 0 5px 0 #d99a28; }
+  .folder::before { content: ""; position: absolute; left: 0; top: -12px; width: 42%; height: 22px; background: #e8822f; border-radius: 10px 10px 0 0; z-index: -1; }
+  .folder::after { content: ""; position: absolute; left: 12px; right: 12px; top: 8px; height: 10px; background: white; border-radius: 6px; opacity: .9; }
+
+  .scene {
+    background:
+      radial-gradient(60% 40% at 12% 78%, var(--color-grass-deep) 0 60%, transparent 61%),
+      radial-gradient(70% 45% at 88% 80%, var(--color-grass-deep) 0 60%, transparent 61%),
+      linear-gradient(var(--color-air) 0 56%, var(--color-grass) 56%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+@keyframes tilt { 0%, 25% { rotate: 0deg; } 55%, 100% { rotate: -90deg; } }
+@keyframes bob { 50% { translate: 0 -8px; rotate: -2deg; } }

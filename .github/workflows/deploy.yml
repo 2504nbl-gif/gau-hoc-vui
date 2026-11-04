@@ -1,0 +1,37 @@
+# Tự động đăng app: mỗi lần đẩy mã nguồn lên nhánh "source",
+# GitHub build app rồi chép bản build vào nhánh "main" — nhánh mà GitHub Pages đang phục vụ.
+# (Không cần đổi cài đặt Pages.)
+name: Build và đăng app
+on:
+  push:
+    branches: [source]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Chép bản build sang nhánh main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch --depth 1 origin main
+          git worktree add ../site origin/main
+          cd ../site
+          git rm -rq . || true
+          cp -r ../${{ github.event.repository.name }}/dist/. .
+          touch .nojekyll
+          git add -A
+          git commit -m "Đăng bản build từ source@${GITHUB_SHA::7}" || { echo "Không có gì thay đổi"; exit 0; }
+          git push origin HEAD:main

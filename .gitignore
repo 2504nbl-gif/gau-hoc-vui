@@ -1,0 +1,12 @@
+node_modules
+dist
+dist-single
+gau-hoc-vui-pro.html
+scripts/voice-texts.json
+.voice-cache
+
+# Ảnh gia đình là dữ liệu riêng tư — không bao giờ commit
+goi-anh-gia-dinh*.json
+/family/
+.claude/
+tools/*bo*.ipynb

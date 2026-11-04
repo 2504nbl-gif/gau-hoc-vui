@@ -1,0 +1,36 @@
+{
+  "name": "gau-hoc-vui",
+  "version": "0.1.0",
+  "description": "",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit",
+    "preview": "vite preview",
+    "voice:texts": "tsx scripts/collect-texts.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "motion": "^11.15.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zustand": "^5.0.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "4.1.11",
+    "@types/node": "^22.10.5",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "tailwindcss": "4.1.11",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.7",
+    "vite-plugin-pwa": "^0.21.1",
+    "vite-plugin-singlefile": "^2.1.0"
+  },
+  "private": true,
+  "type": "module"
+}
