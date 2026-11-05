@@ -54,6 +54,7 @@ src/
 ├─ features/math/               Làm quen số 0–9 (3 bước), So sánh; Đếm trứng, Số thiếu, Chậu hoa ở choiceGames
 ├─ features/talking/            Gấu biết nói: nhại giọng (services/audio/voiceChanger.ts, chỉ giữ trong bộ nhớ), chạm phản ứng, chăm sóc;
 │                               nhân vật gấu dùng chung: components/content/BearCharacter.tsx (DancingBear = tư thế 'dance')
+├─ features/focus/              Trò rèn tập trung cho bé 2 tuổi: Tìm đôi (PairItem vẽ tất/găng/giày SVG), Úp cốc, Kéo rèm, Đóng đinh
 ├─ features/montessori/         Trò kéo thả cho bé 2 tuổi: Phân loại màu, To và nhỏ, Mẹ và con (dữ liệu: data/montessori.ts)
 ├─ features/parent/             Góc phụ huynh: ParentGate (ổ khóa + phép nhân bằng chữ), ParentCorner (báo cáo, cài đặt),
 │                               AppSession (áp cài đặt âm thanh, đếm phút chơi, tắt nhạc ở trò âm nhạc), Bedtime (hết giờ)

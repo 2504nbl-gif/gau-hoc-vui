@@ -109,6 +109,14 @@ export const PHRASES = {
   bearSleepy: 'Gấu buồn ngủ quá…',
   bearGoodNight: 'Chúc Gấu ngủ ngon!',
   bearWake: 'Gấu dậy rồi!',
+  // Trò rèn tập trung: Tìm đôi, Úp cốc, Kéo rèm, Đóng đinh
+  pairHint: 'Bé tìm chiếc giống hệt nhé!',
+  pairDone: 'Thành một đôi rồi!',
+  cupWatch: 'Bé nhìn kỹ đồ chơi chui vào cốc nào nhé!',
+  cupFind: 'Đồ chơi ở cốc nào nhỉ?',
+  curtainSide: 'Bé kéo rèm sang hai bên nhé!',
+  curtainUp: 'Bé kéo rèm lên nhé!',
+  hammerHint: 'Bé chạm vào cây đinh để đóng nhé!',
 } as const;
 
 /** Tên các trò chơi (đọc khi bé chạm vào). Được điền thêm từ danh sách trò chơi. */

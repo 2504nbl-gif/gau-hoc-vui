@@ -22,6 +22,10 @@ import { Compare } from './math/Compare';
 import { ColorSort } from './montessori/ColorSort';
 import { BigSmall } from './montessori/BigSmall';
 import { MomBaby } from './montessori/MomBaby';
+import { SockPair } from './focus/SockPair';
+import { CupShuffle } from './focus/CupShuffle';
+import { Curtain } from './focus/Curtain';
+import { HammerNails } from './focus/HammerNails';
 
 export interface GameProps { onExit: () => void; arg?: string }
 
@@ -55,6 +59,10 @@ const RENDERS: Record<string, (p: GameProps) => ReactNode> = {
   'color-sort': (p) => <ColorSort {...p} />,
   'big-small': (p) => <BigSmall {...p} />,
   'mom-baby': (p) => <MomBaby {...p} />,
+  'sock-pair': (p) => <SockPair {...p} />,
+  'cup-shuffle': (p) => <CupShuffle {...p} />,
+  'curtain': (p) => <Curtain {...p} />,
+  'hammer-nails': (p) => <HammerNails {...p} />,
 };
 
 export const GAMES: GameEntry[] = GAME_META.map((m) => ({ ...m, render: RENDERS[m.id] }));

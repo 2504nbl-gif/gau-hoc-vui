@@ -22,6 +22,7 @@ export const GAME_META: GameMeta[] = [
   { id: 'jungle', module: 'language-games', title: 'Rừng rậm', icon: '🌴', note: 'Tìm các bạn trong rừng', color: 'leaf', route: { name: 'scene-hunt', scene: 'jungle' } },
   { id: 'sticker', module: 'language-games', title: 'Dán hình', icon: '🧩', note: 'Kéo hình dán vào tranh', color: 'sun', route: { name: 'sticker' } },
   { id: 'mom-baby', module: 'language-games', title: 'Mẹ và con', icon: '🐥', note: 'Đưa con về với mẹ', color: 'peach' },
+  { id: 'curtain', module: 'language-games', title: 'Kéo rèm', icon: '🖼️', note: 'Kéo rèm ra, xem hình gì', color: 'coral' },
   // Tư duy — Quan sát
   { id: 'shadow-match', module: 'observation', title: 'Tìm bóng', icon: '🌑', note: 'Kéo bạn về đúng cái bóng', color: 'teal' },
   { id: 'hidden-count', module: 'observation', title: 'Đếm vật ẩn', icon: '🌿', note: 'Đếm cả những bạn nấp sau lá', color: 'leaf' },
@@ -29,13 +30,16 @@ export const GAME_META: GameMeta[] = [
   { id: 'color-tower', module: 'observation', title: 'Xếp tháp màu', icon: '🗼', note: 'Vòng to xếp dưới, nhỏ dần lên', color: 'coral' },
   { id: 'rotate-grid', module: 'observation', title: 'Xoay hình', icon: '🔄', note: 'Chạm xoay 4 mảnh cho đúng', color: 'sea' },
   { id: 'color-sort', module: 'observation', title: 'Phân loại màu', icon: '🍎', note: 'Bỏ đồ vật vào giỏ cùng màu', color: 'berry' },
+  { id: 'sock-pair', module: 'observation', title: 'Tìm đôi', icon: '🧦', note: 'Ghép chiếc tất, găng, giày giống hệt', color: 'berry' },
   // Tư duy — Vận động tinh
   { id: 'thread-needle', module: 'fine-motor', title: 'Xỏ chỉ qua kim', icon: '🪡', note: 'Kéo sợi chỉ theo đường chấm', color: 'peach' },
   { id: 'dress-up', module: 'fine-motor', title: 'Mặc áo cho gấu', icon: '👕', note: 'Kéo mũ, áo, quần, giày', color: 'grape' },
+  { id: 'hammer-nails', module: 'fine-motor', title: 'Đóng đinh', icon: '🔨', note: 'Chạm đinh, búa gõ cốc cốc', color: 'peach' },
   // Tư duy — Ghi nhớ
   { id: 'memory-2x2', module: 'memory', title: 'Lật thẻ dễ', icon: '🃏', note: '2 × 2 · 2 cặp', color: 'leaf', arg: '2x2' },
   { id: 'memory-2x3', module: 'memory', title: 'Lật thẻ vừa', icon: '🎴', note: '2 × 3 · 3 cặp', color: 'sun', arg: '2x3' },
   { id: 'memory-3x4', module: 'memory', title: 'Lật thẻ khó', icon: '🧠', note: '3 × 4 · 6 cặp', color: 'berry', arg: '3x4' },
+  { id: 'cup-shuffle', module: 'memory', title: 'Úp cốc', icon: '🥤', note: 'Đồ chơi trốn trong cốc nào?', color: 'grape' },
   // Mỹ thuật
   { id: 'trace-shapes', module: 'art', title: 'Tô hình theo nét', icon: '✏️', note: 'Tròn, vuông, tam giác, ngôi sao…', color: 'berry' },
   { id: 'coloring', module: 'art', title: 'Tô màu tranh', icon: '🖍️', note: 'Chọn màu, chạm để tô', color: 'sun' },

@@ -13,7 +13,8 @@ export type StepKind = 'cards' | 'listen' | 'story' | 'think' | 'skill';
 export interface PlanStep { kind: StepKind; ref: string }
 
 /** Trò tư duy (quan sát, ghi nhớ, vận động tinh) hợp với bé nhỏ. */
-const THINK_GAMES = ['shadow-match', 'hidden-count', 'sequence', 'color-tower', 'rotate-grid', 'memory-2x2', 'dress-up', 'thread-needle', 'color-sort', 'mom-baby'];
+const THINK_GAMES = ['shadow-match', 'hidden-count', 'sequence', 'color-tower', 'rotate-grid', 'memory-2x2', 'dress-up', 'thread-needle', 'color-sort', 'mom-baby',
+  'sock-pair', 'cup-shuffle', 'curtain', 'hammer-nails'];
 /** Toán, nhạc, vẽ. */
 const SKILL_GAMES = ['egg-count', 'flower-pot', 'trace-shapes', 'piano-drag', 'sound-quiz', 'big-small'];
 
