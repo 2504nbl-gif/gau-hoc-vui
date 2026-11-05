@@ -22,6 +22,7 @@ import { Compare } from './math/Compare';
 import { ColorSort } from './montessori/ColorSort';
 import { BigSmall } from './montessori/BigSmall';
 import { MomBaby } from './montessori/MomBaby';
+import { BlowBalloon, BlowBoat, BlowBubbles, BlowPinwheel } from './blow/scenes';
 
 export interface GameProps { onExit: () => void; arg?: string }
 
@@ -55,6 +56,10 @@ const RENDERS: Record<string, (p: GameProps) => ReactNode> = {
   'color-sort': (p) => <ColorSort {...p} />,
   'big-small': (p) => <BigSmall {...p} />,
   'mom-baby': (p) => <MomBaby {...p} />,
+  'blow-pinwheel': (p) => <BlowPinwheel {...p} />,
+  'blow-balloon': (p) => <BlowBalloon {...p} />,
+  'blow-bubbles': (p) => <BlowBubbles {...p} />,
+  'blow-boat': (p) => <BlowBoat {...p} />,
 };
 
 export const GAMES: GameEntry[] = GAME_META.map((m) => ({ ...m, render: RENDERS[m.id] }));
