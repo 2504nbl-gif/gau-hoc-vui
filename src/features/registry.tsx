@@ -26,6 +26,7 @@ import { SockPair } from './focus/SockPair';
 import { CupShuffle } from './focus/CupShuffle';
 import { Curtain } from './focus/Curtain';
 import { HammerNails } from './focus/HammerNails';
+import { BlowBalloon, BlowBoat, BlowBubbles, BlowPinwheel } from './blow/scenes';
 
 export interface GameProps { onExit: () => void; arg?: string }
 
@@ -63,6 +64,10 @@ const RENDERS: Record<string, (p: GameProps) => ReactNode> = {
   'cup-shuffle': (p) => <CupShuffle {...p} />,
   'curtain': (p) => <Curtain {...p} />,
   'hammer-nails': (p) => <HammerNails {...p} />,
+  'blow-pinwheel': (p) => <BlowPinwheel {...p} />,
+  'blow-balloon': (p) => <BlowBalloon {...p} />,
+  'blow-bubbles': (p) => <BlowBubbles {...p} />,
+  'blow-boat': (p) => <BlowBoat {...p} />,
 };
 
 export const GAMES: GameEntry[] = GAME_META.map((m) => ({ ...m, render: RENDERS[m.id] }));

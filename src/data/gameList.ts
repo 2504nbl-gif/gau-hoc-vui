@@ -35,6 +35,11 @@ export const GAME_META: GameMeta[] = [
   { id: 'thread-needle', module: 'fine-motor', title: 'Xỏ chỉ qua kim', icon: '🪡', note: 'Kéo sợi chỉ theo đường chấm', color: 'peach' },
   { id: 'dress-up', module: 'fine-motor', title: 'Mặc áo cho gấu', icon: '👕', note: 'Kéo mũ, áo, quần, giày', color: 'grape' },
   { id: 'hammer-nails', module: 'fine-motor', title: 'Đóng đinh', icon: '🔨', note: 'Chạm đinh, búa gõ cốc cốc', color: 'peach' },
+  // Vận động tinh — Tập thổi (luyện hơi thở, cơ miệng; thổi vào micro hoặc giữ nút gió)
+  { id: 'blow-pinwheel', module: 'fine-motor', title: 'Thổi chong chóng', icon: '🌬️', note: 'Tập thổi: chong chóng quay tít', color: 'sky' },
+  { id: 'blow-balloon', module: 'fine-motor', title: 'Thổi bóng bay', icon: '🎈', note: 'Tập thổi: bóng to dần rồi nổ', color: 'coral' },
+  { id: 'blow-bubbles', module: 'fine-motor', title: 'Thổi bong bóng', icon: '🫧', note: 'Tập thổi, chạm cho bóng nổ', color: 'grape' },
+  { id: 'blow-boat', module: 'fine-motor', title: 'Thổi thuyền giấy', icon: '⛵', note: 'Tập thổi: thuyền sang bờ', color: 'sea' },
   // Tư duy — Ghi nhớ
   { id: 'memory-2x2', module: 'memory', title: 'Lật thẻ dễ', icon: '🃏', note: '2 × 2 · 2 cặp', color: 'leaf', arg: '2x2' },
   { id: 'memory-2x3', module: 'memory', title: 'Lật thẻ vừa', icon: '🎴', note: '2 × 3 · 3 cặp', color: 'sun', arg: '2x3' },

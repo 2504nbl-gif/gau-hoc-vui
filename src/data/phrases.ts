@@ -117,6 +117,18 @@ export const PHRASES = {
   curtainSide: 'Bé kéo rèm sang hai bên nhé!',
   curtainUp: 'Bé kéo rèm lên nhé!',
   hammerHint: 'Bé chạm vào cây đinh để đóng nhé!',
+  // Tập thổi (luyện hơi thở, cơ miệng): chong chóng, bóng bay, bong bóng xà phòng, thuyền giấy
+  blowHint: 'Bé thổi phù phù nào!',
+  blowMore: 'Thổi mạnh nữa lên!',
+  blowNoMic: 'Bé chạm giữ nút gió để thổi nhé!',
+  pinwheelHint: 'Bé thổi cho chong chóng quay nào!',
+  pinwheelDone: 'Giỏi quá, chong chóng quay tít!',
+  balloonHint: 'Bé thổi cho bóng bay to lên nào!',
+  balloonDone: 'Bùm! Bóng bay nổ thành pháo hoa!',
+  bubbleHint: 'Bé thổi bong bóng, rồi chạm cho bong bóng nổ nhé!',
+  bubbleDone: 'Giỏi quá, bé chạm nổ nhiều bong bóng rồi!',
+  boatHint: 'Bé thổi cho thuyền sang bờ bên kia nhé!',
+  boatDone: 'Thuyền cập bến rồi!',
 } as const;
 
 /** Tên các trò chơi (đọc khi bé chạm vào). Được điền thêm từ danh sách trò chơi. */

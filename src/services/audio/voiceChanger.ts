@@ -2,6 +2,7 @@
 // thu tới khi bé im ~0,8 giây (tối đa 6 giây) rồi phát lại giọng cao, vui.
 // Bản thu CHỈ nằm trong bộ nhớ (Float32Array), phát xong là bỏ — không lưu ở đâu cả.
 import { audioCtx, playSegment, type Segment } from './AudioManager';
+import { openMic, rms } from './mic';
 import { isSpeaking } from './voice';
 
 /** off = tạm dừng nghe · listening = chờ bé nói · hearing = đang thu · speaking = gấu đang nói lại. */
@@ -33,28 +34,13 @@ const PRE_ROLL = 6;
 const MIN_THRESHOLD = 0.012;
 const FLOOR_FACTOR = 3;
 
-const rms = (d: Float32Array) => {
-  let s = 0;
-  for (let i = 0; i < d.length; i++) s += d[i] * d[i];
-  return Math.sqrt(s / d.length);
-};
-
 /** Mở micro. Bị từ chối → 'denied'; máy không có micro / trình duyệt không cho → 'unsupported'. */
 export async function openVoiceChanger(onState: (s: VoiceState) => void): Promise<OpenResult> {
-  const c = audioCtx();
-  if (!c || !navigator.mediaDevices?.getUserMedia || !('createScriptProcessor' in c)) return 'unsupported';
-  let stream: MediaStream;
-  try {
-    stream = await navigator.mediaDevices.getUserMedia({
-      audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true },
-    });
-  } catch (e) {
-    const name = (e as DOMException)?.name;
-    return name === 'NotAllowedError' || name === 'SecurityError' ? 'denied' : 'unsupported';
-  }
-  if (c.state === 'suspended') void c.resume();
+  if (!('createScriptProcessor' in (audioCtx() ?? {}))) return 'unsupported';
+  const mic = await openMic(true);
+  if (typeof mic === 'string') return mic;
+  const { ctx: c, src } = mic;
 
-  const src = c.createMediaStreamSource(stream);
   // ScriptProcessor: cũ nhưng chạy ở mọi trình duyệt (kể cả Android cũ), không cần file worklet riêng.
   const proc = c.createScriptProcessor(CHUNK, 1, 1);
   const sink = c.createGain();
@@ -84,7 +70,7 @@ export async function openVoiceChanger(onState: (s: VoiceState) => void): Promis
 
   function playBack(chunks: Float32Array[], keep: number) {
     const n = Math.min(keep, chunks.length * CHUNK);
-    const buf = c!.createBuffer(1, n, c!.sampleRate);
+    const buf = c.createBuffer(1, n, c.sampleRate);
     const out = buf.getChannelData(0);
     let peak = 0;
     for (let i = 0, o = 0; i < chunks.length && o < n; i++) {
@@ -97,7 +83,7 @@ export async function openVoiceChanger(onState: (s: VoiceState) => void): Promis
     const gain = peak > 0 ? Math.min(6, 0.9 / peak) : 1;
     for (let i = 0; i < n; i++) out[i] *= gain;
     // Vuốt nhẹ 2 đầu cho khỏi "bụp".
-    const fade = Math.min(n >> 1, Math.round(c!.sampleRate * 0.02));
+    const fade = Math.min(n >> 1, Math.round(c.sampleRate * 0.02));
     for (let i = 0; i < fade; i++) { const k = i / fade; out[i] *= k; out[n - 1 - i] *= k; }
 
     set('speaking');
@@ -162,8 +148,8 @@ export async function openVoiceChanger(onState: (s: VoiceState) => void): Promis
     close: () => {
       proc.onaudioprocess = null;
       seg?.stop();
-      try { src.disconnect(); proc.disconnect(); sink.disconnect(); analyser.disconnect(); } catch { /* đã ngắt */ }
-      stream.getTracks().forEach((t) => t.stop());
+      try { proc.disconnect(); sink.disconnect(); analyser.disconnect(); } catch { /* đã ngắt */ }
+      mic.stop();
     },
   };
 }
