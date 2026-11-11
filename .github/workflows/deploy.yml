@@ -29,7 +29,8 @@ jobs:
           git fetch --depth 1 origin main
           git worktree add ../site origin/main
           cd ../site
-          git rm -rq . || true
+          # Xóa bản build cũ nhưng GIỮ các app khác nằm chung nhánh main (vd co-vua/)
+          git rm -rq . -- ':!co-vua' || true
           cp -r ../${{ github.event.repository.name }}/dist/. .
           touch .nojekyll
           git add -A

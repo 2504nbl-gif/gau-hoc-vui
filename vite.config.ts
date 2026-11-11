@@ -35,6 +35,8 @@ const pwa = VitePWA({
     globPatterns: ['**/*.{js,css,html,png,svg,json,mp3,webp}'],
     maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
     navigateFallback: 'index.html',
+    // Thư mục app khác nằm chung trang (vd /co-vua) không được trả về app Gấu
+    navigateFallbackDenylist: [/\/co-vua(\/|$)/],
     runtimeCaching: [
       {
         urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/,
