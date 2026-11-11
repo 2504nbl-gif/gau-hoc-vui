@@ -1,0 +1,1133 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Cờ Vua của Indo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lora:wght@600;700&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+<style>
+/* Layout: sổ tay luyện cờ — thanh tab trên, nội dung một cột, bàn cờ gỗ là trung tâm */
+:root{
+  --bg:#f3f1ea; --surface:#fffdf8; --ink:#2a2620; --muted:#6d655a; --line:#ddd6c8;
+  --accent:#1f5d4c; --accent-soft:#dcebe5;
+  --sq-light:#ecd9b6; --sq-dark:#b58a5e; --sq-sel:#e9c46a; --sq-last:#cfe0a4;
+  --ok:#2f7a3e; --ok-soft:#e1f1e3; --bad:#b23a2e; --bad-soft:#f7e1dd;
+  --f-display:"Lora",Georgia,serif; --f-body:"Be Vietnam Pro",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#1b1a17; --surface:#25231f; --ink:#ece6da; --muted:#a69d8f; --line:#3a362f;
+  --accent:#6cc2a6; --accent-soft:#1f3a33;
+  --sq-light:#d8c39d; --sq-dark:#9a7149; --sq-sel:#d9b04f; --sq-last:#b4c784;
+  --ok:#73c486; --ok-soft:#1f3326; --bad:#ee8576; --bad-soft:#3d2420; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1b1a17; --surface:#25231f; --ink:#ece6da; --muted:#a69d8f; --line:#3a362f;
+  --accent:#6cc2a6; --accent-soft:#1f3a33;
+  --sq-light:#d8c39d; --sq-dark:#9a7149; --sq-sel:#d9b04f; --sq-last:#b4c784;
+  --ok:#73c486; --ok-soft:#1f3326; --bad:#ee8576; --bad-soft:#3d2420; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6}
+.wrap{max-width:980px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:16px}
+h1{font-family:var(--f-display);font-size:clamp(1.6rem,4vw,2.2rem);line-height:1.2;margin:0;text-wrap:balance}
+.sub{color:var(--muted);margin:4px 0 0}
+.meter{min-width:220px;flex:0 1 280px}
+.meter .lbl{font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between}
+.bar{height:10px;border-radius:5px;background:var(--line);overflow:hidden;margin-top:4px}
+.bar>i{display:block;height:100%;background:var(--accent);width:0;transition:width .4s}
+nav.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:20px;overflow-x:auto}
+nav.tabs button{font:600 .95rem var(--f-body);background:none;border:0;border-bottom:3px solid transparent;color:var(--muted);padding:10px 14px;cursor:pointer;white-space:nowrap}
+nav.tabs button[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent)}
+button:focus-visible,.btn:focus-visible{outline:3px solid var(--sq-sel);outline-offset:2px}
+h2{font-family:var(--f-display);font-size:1.45rem;margin:0 0 8px;text-wrap:balance}
+h3{font-size:1.05rem;margin:0 0 6px}
+p{margin:0 0 10px}
+.btn{font:600 .92rem var(--f-body);border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:8px 14px;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.btn:disabled{opacity:.45;cursor:default}
+/* Lộ trình */
+.days{display:grid;gap:10px}
+.day{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.day.done{background:var(--accent-soft);border-color:transparent}
+.day .num{font-family:var(--f-display);font-size:1.5rem;color:var(--accent);min-width:2.2ch;text-align:center;line-height:1.2}
+.day .body{min-width:0}
+.day ul{margin:4px 0 8px;padding-left:20px}
+.day .links{display:flex;flex-wrap:wrap;gap:6px}
+.chk{display:flex;align-items:center;gap:6px;font-size:.85rem;color:var(--muted);cursor:pointer;white-space:nowrap}
+.chk input{width:20px;height:20px;accent-color:var(--accent)}
+/* Bài học */
+.lessons{display:grid;grid-template-columns:220px 1fr;gap:20px}
+.lesson-list{display:flex;flex-direction:column;gap:4px}
+.lesson-list button{text-align:left;font:500 .92rem var(--f-body);background:none;border:0;border-radius:8px;padding:8px 10px;color:var(--ink);cursor:pointer}
+.lesson-list button[aria-current="true"]{background:var(--accent-soft);color:var(--accent);font-weight:700}
+.lesson-body{min-width:0;max-width:65ch}
+.lesson-body ul,.lesson-body ol{padding-left:22px;margin:0 0 12px}
+.lesson-body li{margin-bottom:4px}
+.tip{background:var(--surface);border-left:4px solid var(--accent);padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0}
+.mini{display:flex;flex-wrap:wrap;gap:16px;margin:12px 0}
+.mini figure{margin:0;width:200px;max-width:100%}
+.mini figcaption{font-size:.85rem;color:var(--muted);margin-top:4px}
+table.val{border-collapse:collapse;margin:8px 0 12px}
+table.val td,table.val th{border-bottom:1px solid var(--line);padding:6px 14px 6px 0;text-align:left}
+table.val td.n{font-variant-numeric:tabular-nums;font-weight:700}
+/* Luyện tập */
+.sets{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.sets button{font:600 .9rem var(--f-body);border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 14px;cursor:pointer}
+.sets button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.trainer{display:grid;grid-template-columns:minmax(0,500px) minmax(0,1fr);gap:24px;align-items:start}
+.panel{min-width:0;display:flex;flex-direction:column;gap:12px}
+.ptitle{font-family:var(--f-display);font-size:1.3rem;margin:0}
+.turn{font-size:.85rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.feedback{border-radius:8px;padding:10px 14px;min-height:46px;background:var(--surface);border:1px solid var(--line)}
+.feedback.ok{background:var(--ok-soft);border-color:transparent;color:var(--ok);font-weight:600}
+.feedback.bad{background:var(--bad-soft);border-color:transparent;color:var(--bad);font-weight:600}
+.row{display:flex;flex-wrap:wrap;gap:8px}
+.dots{display:flex;flex-wrap:wrap;gap:6px}
+.dots button{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--muted);font:600 .8rem var(--f-body);cursor:pointer;font-variant-numeric:tabular-nums}
+.dots button.solved{background:var(--ok);border-color:var(--ok);color:var(--surface)}
+.dots button.cur{outline:2px solid var(--accent);outline-offset:1px}
+/* Bàn cờ */
+/* Bàn cờ luôn vuông: 8 hàng × 8 cột chia đều, cỡ quân tính theo bề rộng bàn (cqw) chứ không theo màn hình */
+.board{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));grid-template-rows:repeat(8,minmax(0,1fr));width:100%;max-width:560px;aspect-ratio:1/1;container-type:inline-size;border-radius:6px;overflow:hidden;box-shadow:0 0 0 6px #6e4a2c, 0 6px 18px rgba(0,0,0,.18);user-select:none;touch-action:manipulation}
+.mini .board{box-shadow:0 0 0 3px #6e4a2c}
+.sq{position:relative;display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;width:100%;height:100%;overflow:hidden;font:inherit;font-size:9.4cqw;line-height:1;cursor:pointer;border:0;padding:0;margin:0;border-radius:0;-webkit-appearance:none;appearance:none}
+.mini .sq{cursor:default}
+.sq.l{background:var(--sq-light)} .sq.d{background:var(--sq-dark)}
+.sq.last{background:var(--sq-last)} .sq.sel{background:var(--sq-sel)}
+.sq.hint{box-shadow:inset 0 0 0 4px var(--accent)}
+.sq.chk{background:radial-gradient(circle,#e8584a 0%,rgba(232,88,74,.55) 45%,transparent 75%),var(--sq-light)}
+.sq.d.chk{background:radial-gradient(circle,#e8584a 0%,rgba(232,88,74,.55) 45%,transparent 75%),var(--sq-dark)}
+.sq.danger{box-shadow:inset 0 0 0 4px var(--bad)}
+.sq.tgt::after{content:"";position:absolute;width:28%;height:28%;border-radius:50%;background:rgba(30,40,30,.28)}
+.sq.tgt.cap::after{width:88%;height:88%;background:none;border:4px solid rgba(30,40,30,.3)}
+.pc{position:relative;z-index:1;pointer-events:none}
+.pc.w{color:#fffaf0;text-shadow:0 0 1px #000,0 0 1px #000,0 1px 2px rgba(0,0,0,.6)}
+.pc.b{color:#1d1a16;text-shadow:0 1px 0 rgba(255,255,255,.25)}
+.coord{position:absolute;font:600 max(9px,2.2cqw)/1 var(--f-body);opacity:.75;pointer-events:none}
+.coord.f{right:3px;bottom:2px} .coord.r{left:3px;top:2px}
+.sq.l .coord{color:#8a6440} .sq.d .coord{color:#f3e4c8}
+.mini .coord{display:none}
+.notes{font-size:.9rem;color:var(--muted)}
+.prog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px}
+.stat b{display:block;font-family:var(--f-display);font-size:1.8rem;color:var(--accent);font-variant-numeric:tabular-nums}
+.confirm{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.cheer{background:var(--accent-soft);border-radius:12px;padding:14px 18px;margin-bottom:16px}
+.cheer-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;font-weight:700;color:var(--accent)}
+.cheer p{margin:4px 0 0;font-family:var(--f-display);font-size:1.12rem;line-height:1.45;text-wrap:balance}
+.streak{font-size:.85rem;font-weight:600;font-variant-numeric:tabular-nums}
+.field{display:flex;flex-direction:column;gap:4px;font-size:.8rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.seg{display:flex;flex-wrap:wrap;gap:4px}
+.seg button{font:600 .9rem var(--f-body);text-transform:none;letter-spacing:0;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:7px 12px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.toggle{display:flex;align-items:center;gap:8px;font-weight:500;cursor:pointer}
+.toggle input{width:20px;height:20px;accent-color:var(--accent)}
+.score{display:flex;justify-content:space-between;font-size:.9rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.movelist{font-variant-numeric:tabular-nums;font-size:.9rem;max-height:150px;overflow-y:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 12px;line-height:1.8}
+.movelist span{margin-right:10px;white-space:nowrap}
+.mistakes{display:grid;gap:6px;margin-bottom:16px;max-width:520px}
+.mistakes div{display:flex;justify-content:space-between;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 12px}
+.mistakes b{color:var(--bad);font-variant-numeric:tabular-nums}
+.empty{background:var(--surface);border:1px dashed var(--line);border-radius:10px;padding:16px;color:var(--muted)}
+.glabel{font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);align-self:center;padding:0 4px}
+.lesson-list .glabel{padding:10px 10px 2px}
+.sets .glabel:not(:first-child){margin-left:8px}
+.oplist{display:flex;flex-direction:column;gap:8px}
+.opgroup{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.opgroup .glabel{min-width:7.5em}
+.opgroup button{font:600 .9rem var(--f-body);border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 14px;cursor:pointer}
+.opgroup button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.coach{background:var(--accent-soft);border-radius:10px;padding:12px 16px;font-family:var(--f-display);font-size:1.05rem;line-height:1.5}
+.coach::before{content:"Lời thầy · ";font-family:var(--f-body);font-weight:700;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.feedback.coachbox{background:var(--accent-soft);border-color:transparent}
+.feedback.coachbox.ok{background:var(--ok-soft);color:var(--ok);font-weight:500}
+.feedback.coachbox.bad{background:var(--bad-soft);color:var(--bad);font-weight:500}
+.goal{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 14px;font-size:.95rem}
+.goal .notes{display:block;margin-top:4px}
+.select{font:500 .95rem var(--f-body);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px;text-transform:none;letter-spacing:0;max-width:100%}
+.field label{cursor:pointer}
+h3.phase{font-family:var(--f-display);font-size:1.15rem;color:var(--accent);margin:12px 0 0}
+@media (max-width:760px){
+  .lessons{grid-template-columns:1fr}
+  .lesson-list{flex-direction:row;overflow-x:auto;padding-bottom:4px}
+  .lesson-list .glabel{padding:8px 4px;white-space:nowrap}
+  .lesson-list button{white-space:nowrap}
+  .trainer{grid-template-columns:1fr}
+  .day{grid-template-columns:auto 1fr}
+  .day .chk{grid-column:2}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Cờ Vua Cấp Tốc của Indo</h1>
+      <p class="sub">Giai đoạn 1 cơ bản 12 ngày, giai đoạn 2 nâng cao 7 ngày · mỗi ngày 30–45 phút</p>
+    </div>
+    <div class="meter" aria-live="polite">
+      <div class="lbl"><span>Tiến độ</span><span id="meterTxt">0%</span></div>
+      <div class="bar"><i id="meterBar"></i></div>
+    </div>
+  </header>
+  <aside class="cheer" id="cheer" aria-live="polite">
+    <div class="cheer-head"><span id="greet"></span><span class="streak" id="streak"></span></div>
+    <p id="quote"></p>
+  </aside>
+  <nav class="tabs" role="tablist">
+    <button role="tab" id="tab-plan" data-view="plan" aria-selected="true">Lộ trình</button>
+    <button role="tab" id="tab-learn" data-view="learn" aria-selected="false">Bài học</button>
+    <button role="tab" id="tab-train" data-view="train" aria-selected="false">Luyện bài tập</button>
+    <button role="tab" id="tab-open" data-view="open" aria-selected="false">Khai cuộc</button>
+    <button role="tab" id="tab-play" data-view="play" aria-selected="false">Đánh với máy</button>
+    <button role="tab" id="tab-prog" data-view="prog" aria-selected="false">Tiến độ</button>
+  </nav>
+
+  <section id="view-plan">
+    <h2>Mỗi ngày một chặng</h2>
+    <p class="notes">Học bài → làm bài tập → chơi 1–2 ván ở mục Đánh với máy (hoặc với người nhà). Xong ngày nào đánh dấu ngày đó.</p>
+    <div class="days" id="days"></div>
+  </section>
+
+  <section id="view-learn" hidden>
+    <div class="lessons">
+      <div class="lesson-list" id="lessonList"></div>
+      <article class="lesson-body" id="lessonBody"></article>
+    </div>
+  </section>
+
+  <section id="view-train" hidden>
+    <div class="sets" id="sets"></div>
+    <div class="empty" id="reviewEmpty" hidden>Chưa có bài nào làm sai. Khi Indo đi sai một bài, bài đó sẽ vào đây để ôn lại cho đến khi giải đúng ngay lần đầu.</div>
+    <div class="trainer" id="trainer">
+      <div id="board" class="board" aria-label="Bàn cờ"></div>
+      <div class="panel">
+        <div class="turn" id="turn">Trắng đi</div>
+        <h2 class="ptitle" id="ptitle"></h2>
+        <p id="pdesc" style="margin:0"></p>
+        <div class="feedback" id="feedback" aria-live="polite">Bấm vào quân rồi bấm ô muốn đi.</div>
+        <div class="row">
+          <button class="btn" id="btnHint">Gợi ý</button>
+          <button class="btn" id="btnReset">Làm lại</button>
+          <button class="btn" id="btnShow">Xem lời giải</button>
+          <button class="btn primary" id="btnNext">Bài tiếp →</button>
+        </div>
+        <div class="dots" id="dots"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="view-open" hidden>
+    <div class="sets oplist" id="opList"></div>
+    <div class="trainer">
+      <div id="oboard" class="board" aria-label="Bàn cờ khai cuộc"></div>
+      <div class="panel">
+        <div class="turn" id="oSide"></div>
+        <h2 class="ptitle" id="oName"></h2>
+        <p class="notes" id="oIntro" style="margin:0"></p>
+        <div class="feedback coachbox" id="oCoach" aria-live="polite"></div>
+        <div class="row">
+          <button class="btn" id="oHint">Gợi ý</button>
+          <button class="btn" id="oReset">Làm lại</button>
+          <button class="btn primary" id="oPlay">Đánh tiếp với máy</button>
+        </div>
+        <div class="score"><span id="oStep"></span></div>
+        <div class="movelist" id="oMoves" aria-label="Các nước đã đi"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="view-play" hidden>
+    <div class="trainer">
+      <div id="pboard" class="board" aria-label="Bàn cờ đánh với máy"></div>
+      <div class="panel">
+        <div class="field"><label for="startSel">Thế bắt đầu</label><select id="startSel" class="select"></select></div>
+        <div class="goal" id="drillGoal" hidden></div>
+        <div class="field">Độ khó<div class="seg" id="lvSeg"></div></div>
+        <div class="field" id="colField">Indo cầm quân<div class="seg" id="colSeg"></div></div>
+        <div class="feedback" id="pstatus" aria-live="polite"></div>
+        <div class="score"><span id="matW"></span><span id="matB"></span></div>
+        <label class="toggle"><input type="checkbox" id="coachT" checked> Thầy nhắc khi đi hớ</label>
+        <label class="toggle"><input type="checkbox" id="dangerT"> Soi quân đang bị treo (viền đỏ)</label>
+        <div class="row">
+          <button class="btn primary" id="pNew">Ván mới</button>
+          <button class="btn" id="pUndo">Đi lại nước vừa rồi</button>
+          <button class="btn" id="pHint">Gợi ý nước đi</button>
+        </div>
+        <div class="movelist" id="pMoves" aria-label="Biên bản ván cờ"></div>
+        <p class="notes" style="margin:0">Thầy nhắc: khi Indo đi một nước làm mất quân, thầy dừng ván lại để Indo nghĩ lại. Đi thi thì không có thầy nhắc, nên ván Đội tuyển hãy tắt đi.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="view-prog" hidden>
+    <h2>Indo đã đi được bao xa</h2>
+    <div class="prog-grid" id="progGrid"></div>
+    <h3>Dạng bài Indo hay sai</h3>
+    <div class="mistakes" id="mistakes"></div>
+    <p class="notes">Tiến độ lưu ngay trên trình duyệt của máy tính này. Nếu xóa dữ liệu trình duyệt hoặc dùng máy khác, tiến độ sẽ bắt đầu lại.</p>
+    <div class="confirm" id="resetBox">
+      <button class="btn" id="btnWipe">Xóa tiến độ, học lại từ đầu</button>
+    </div>
+  </section>
+</div>
+
+<script>
+const GLYPH={k:"♚",q:"♛",r:"♜",b:"♝",n:"♞",p:"♟"};
+const FILES="abcdefgh";
+
+/* ---------- Dữ liệu bài tập (đã kiểm tra bằng máy) ---------- */
+const SETS=[
+ {id:"m1",name:"Chiếu hết 1 nước",items:[
+  {fen:"6k1/5ppp/8/8/8/8/5PPP/3R2K1 w - - 0 1",type:"mate1",t:"Hàng cuối",d:"Vua Đen bị chính 3 con Tốt nhốt lại. Chiếu hết trong 1 nước.",hint:"d1",sol:"Rd8#"},
+  {fen:"k7/7R/8/8/8/8/8/K5R1 w - - 0 1",type:"mate1",t:"Hai Xe cuốn chiếu",d:"Một Xe đã khóa hàng 7. Xe còn lại làm gì?",hint:"g1",sol:"Rg8#"},
+  {fen:"k7/8/1K6/8/8/8/8/7Q w - - 0 1",type:"mate1",t:"Hậu và Vua",d:"Vua Trắng đã chặn đường thoát. Hậu chiếu hết.",hint:"h1",sol:"Qh8#"},
+  {fen:"7k/8/6K1/8/8/8/8/Q7 w - - 0 1",type:"mate1",t:"Hậu ở góc bàn",d:"Đẩy Vua vào góc rồi kết thúc. Có hơn một cách đúng.",hint:"a1",sol:"Qa8#"},
+  {fen:"4k3/R7/4K3/8/8/8/8/8 w - - 0 1",type:"mate1",t:"Xe và Vua",d:"Vua Trắng đứng đối mặt Vua Đen. Xe chiếu hết.",hint:"a7",sol:"Ra8#"},
+  {fen:"6rk/6pp/8/6N1/8/8/8/6K1 w - - 0 1",type:"mate1",t:"Mã chiếu ngạt",d:"Vua Đen bị quân nhà vây kín. Con Mã ra đòn.",hint:"g5",sol:"Nf7#"},
+  {fen:"r5k1/5p1p/6pQ/8/8/2B5/5PPP/6K1 w - - 0 1",type:"mate1",t:"Hậu có Tượng yểm trợ",d:"Tượng bắn thẳng đường chéo dài. Hậu chiếu hết.",hint:"h6",sol:"Qg7#"},
+  {fen:"r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 4 4",type:"mate1",t:"Chiếu hết 4 nước",d:"Đen vừa đi Mf6 sai. Ô f7 chỉ có Vua bảo vệ.",hint:"h5",sol:"Qxf7#"},
+  {fen:"6k1/5ppp/8/8/8/8/5PPP/4Q1K1 w - - 0 1",type:"mate1",t:"Hàng cuối với Hậu",d:"Giống bài 1, nhưng lần này là Hậu.",hint:"e1",sol:"Qe8#"},
+  {fen:"rnbqkbnr/ppppp2p/5p2/6p1/4P3/8/PPPP1PPP/RNBQKBNR w KQkq g6 0 3",type:"mate1",t:"Chiếu hết 2 nước của Đen",d:"Đen đẩy Tốt f và g quá sớm, đường chéo tới Vua bị mở toang.",hint:"d1",sol:"Qh5#"},
+  {fen:"7k/7p/5N2/8/8/8/8/6RK w - - 0 1",type:"mate1",t:"Xe và Mã",d:"Mã giữ ô g8 và h7. Xe kết thúc.",hint:"g1",sol:"Rg8#"},
+  {fen:"6k1/5p1p/6pB/8/8/8/8/3R2K1 w - - 0 1",type:"mate1",t:"Tượng khóa lối thoát",d:"Tượng h6 giữ ô g7. Vua Đen còn chạy đi đâu?",hint:"d1",sol:"Rd8#"}
+ ]},
+ {id:"tac",name:"Đòn chiến thuật",items:[
+  {fen:"r3k3/8/8/3N4/8/8/8/4K3 w - - 0 1",type:"move",ok:["Nc7+"],t:"Mã bắt đôi",d:"Tìm ô Mã vừa chiếu Vua vừa đánh Xe.",hint:"d5",sol:"Nc7+"},
+  {fen:"4k3/8/8/1q6/4N3/8/8/4K3 w - - 0 1",type:"move",ok:["Nd6+"],t:"Mã bắt đôi Hậu",d:"Một nước chiếu để thắng Hậu Đen.",hint:"e4",sol:"Nd6+"},
+  {fen:"6k1/8/2n1r3/8/3P4/8/8/6K1 w - - 0 1",type:"move",ok:["d5"],t:"Tốt bắt đôi",d:"Con Tốt nhỏ nhất cũng có thể đánh hai quân cùng lúc.",hint:"d4",sol:"d5"},
+  {fen:"r3k3/8/8/8/8/8/8/3QK3 w - - 0 1",type:"move",ok:["Qa4+"],t:"Hậu đánh đôi",d:"Hậu chiếu Vua và nhắm Xe a8 cùng lúc.",hint:"d1",sol:"Qa4+"},
+  {fen:"4q3/8/8/4k3/8/8/8/R5K1 w - - 0 1",type:"move",ok:["Re1+"],t:"Đòn xiên",d:"Chiếu Vua theo cột, Vua tránh đi thì Hậu phía sau mất.",hint:"a1",sol:"Re1+"},
+  {fen:"4k3/8/8/3q4/8/8/8/3RK3 w - - 0 1",type:"move",ok:["Rxd5"],t:"Quân bị treo",d:"Đen vừa để Hậu không ai bảo vệ. Ăn ngay!",hint:"d1",sol:"Rxd5"},
+  {fen:"8/4P3/8/8/8/8/k7/4K3 w - - 0 1",type:"move",ok:["e8=Q"],t:"Phong cấp",d:"Tốt đi đến hàng cuối thành Hậu.",hint:"e7",sol:"e8=Q"},
+  {fen:"2r3k1/8/8/3N4/8/8/8/6K1 w - - 0 1",type:"move",ok:["Ne7+"],t:"Mã bắt đôi",d:"Mã chiếu Vua g8 và đánh Xe c8 cùng một lúc.",hint:"d5",sol:"Ne7+"},
+  {fen:"4k3/8/8/8/6b1/8/8/3QK3 w - - 0 1",type:"move",ok:["Qxg4"],t:"Quân bị treo",d:"Tượng Đen đang đánh Hậu của Indo, nhưng chính nó lại không được bảo vệ.",hint:"d1",sol:"Qxg4"},
+  {fen:"4k3/8/2q5/8/8/8/4N3/4RK2 w - - 0 1",type:"move",ok:["Nd4+"],t:"Chiếu mở",d:"Mã đi đâu thì Xe cũng chiếu Vua. Chọn ô Mã đánh được Hậu.",hint:"e2",sol:"Nd4+"}
+ ]},
+ {id:"m2",name:"Chiếu hết 2 nước",items:[
+  {fen:"7k/8/8/8/8/8/R7/1R4K1 w - - 0 1",type:"mate2",keys:{"Rb7":"Kg8","Ra7":"Kg8"},t:"Hai Xe cuốn chiếu",d:"Khóa một hàng, rồi chiếu ở hàng kế tiếp.",hint:"b1",sol:"Rb7, rồi Ra8#"},
+  {fen:"k7/8/2K5/8/8/8/8/1R6 w - - 0 1",type:"mate2",keys:{"Kc7":"Ka7"},t:"Nước đi im lặng",d:"Không cần chiếu ngay. Vua Trắng tiến lên trước.",hint:"c6",sol:"Vc7, rồi Xa1#"},
+  {fen:"6k1/5ppp/4r3/8/8/8/5PPP/3RR1K1 w - - 0 1",type:"mate2",keys:{"Rd8+":"Re8"},t:"Hai Xe hàng cuối",d:"Chiếu ở hàng 8, Đen phải chặn, rồi ăn quân chặn.",hint:"d1",sol:"Xd8+, Đen chặn Xe8, rồi Xxe8#"},
+  {fen:"6k1/5ppp/8/8/8/8/1Q3PPP/2r1R1K1 w - - 0 1",type:"mate2",keys:{"Qb8+":"Rc8"},t:"Hậu ép hàng cuối",d:"Chiếu ở hàng 8 trước, quân chặn sẽ bị ăn.",hint:"b2",sol:"Hb8+, Đen chặn Xc8, rồi Hxc8#"},
+  {fen:"2k5/8/3K4/8/8/8/8/7R w - - 0 1",type:"mate2",keys:{"Rb1":"Kd8"},t:"Xe chờ một nhịp",d:"Xe đi một nước im lặng để khóa cột b, Vua Đen buộc phải bước vào thế đối mặt.",hint:"h1",sol:"Xb1, Đen đi Vd8, rồi Xb8#"},
+  {fen:"7k/8/8/6K1/8/8/8/R7 w - - 0 1",type:"mate2",keys:{"Kg6":"Kg8"},t:"Vua tiến lên đối mặt",d:"Tàn cuộc Xe + Vua: đưa Vua mình áp sát trước.",hint:"g5",sol:"Vg6, Đen đi Vg8, rồi Xa8#"},
+  {fen:"r5k1/5ppp/8/8/8/8/1Q3PPP/1R4K1 w - - 0 1",type:"mate2",keys:{"Qb8+":"Rxb8"},t:"Thí Hậu",d:"Đôi khi bỏ Hậu để chiếu hết. Kéo Xe Đen ra khỏi hàng 8.",hint:"b2",sol:"Hb8+, Đen ăn Xxb8, rồi Xxb8#"},
+  {fen:"k7/p7/1p6/8/8/8/8/K5RR w - - 0 1",type:"mate2",keys:{"Rg7":"Kb8","Rh7":"Kb8"},t:"Hai Xe cuốn chiếu",d:"Một Xe khóa hàng 7 trước.",hint:"g1",sol:"Xg7, Đen đi Vb8, rồi Xh8#"}
+ ]},
+/* Bộ nâng cao: lời giải dạng cây, mọi nhánh đã được Stockfish 16 kiểm tra */
+ {"id":"combo","name":"Đòn phối hợp","adv":1,"items":[{"fen":"r3k2r/ppp2ppp/2n5/3N4/8/8/PPP2PPP/R3K2R w KQkq - 0 1","type":"tree","goal":"win","n":1,"t":"Mã bắt đôi hoàng gia","d":"Mã nhảy vào ăn Tốt, vừa chiếu Vua vừa đánh Xe.","tree":{"f":1,"ok":["Nxc7+"]},"key":"royalfork"},{"fen":"8/1q4pp/8/3k4/8/8/PP6/5BK1 w - - 0 1","type":"tree","goal":"win","n":1,"t":"Đòn xiên bằng Tượng","d":"Vua và Hậu Đen đứng trên cùng một đường chéo.","tree":{"f":1,"ok":["Bg2+"]},"key":"skewer3"},{"fen":"4k2r/6pp/8/8/3q4/4N3/6PP/4R2K w - - 0 1","type":"tree","goal":"win","n":1,"t":"Chiếu mở bằng Mã","d":"Mã e3 đứng giữa Xe e1 và Vua e8. Mã đi đâu để vừa chiếu mở vừa đánh Hậu?","tree":{"f":1,"ok":["Nc2+","Nf5+"]},"key":"disc2"},{"fen":"4k3/1q4pp/8/8/4N3/8/5PPP/4R1K1 w - - 0 1","type":"tree","goal":"win","n":1,"t":"Chiếu đôi","d":"Chiếu đôi thì Vua bắt buộc phải chạy. Tìm nước chiếu thắng Hậu.","tree":{"f":1,"ok":["Nd6+"]},"key":"dbl2"},{"fen":"2r3k1/2q2ppp/8/8/8/1Q6/5PPP/2R3K1 w - - 0 1","type":"tree","goal":"win","n":2,"t":"Quân quá tải","d":"Xe c8 vừa giữ Hậu c7 vừa giữ hàng cuối. Nó không làm nổi cả hai việc.","tree":{"m":{"Rxc7":{"r":"Rf8","n":{"f":1,"ok":["Qg3","Qd1","Qb4","Qa3","Qb2","Qc3","Rb7","Rd7","Kh1","Qd5","Qh3","Qc4","Qb6","Rc3","Rc2","Rc6","Qb1","Qa2","Qb7","Qa4","Qe3","Qc2","Qf3","h4","Re7","Rc1","Rc5","Rc4","Qb5","Kf1","Ra7","Qd3","h3"]}}},"ok":["Rxc7"]},"key":"backdefl"},{"fen":"rnbq1rk1/pppn1ppp/4p3/3pP3/1b1P4/2NB1N2/PPP2PPP/R1BQK2R w KQ - 5 7","type":"tree","goal":"win","n":1,"t":"Quà Hy Lạp","d":"Đen vừa nhập thành. Đủ ba điều kiện cho đòn thí Tượng ở h7.","tree":{"f":1,"ok":["Bxh7+"]},"key":"greekFR"},{"fen":"7k/ppp5/8/PPP5/8/8/8/7K w - - 0 1","type":"tree","goal":"win","n":1,"t":"Đột phá ba Tốt","d":"Ba Tốt Trắng đối mặt ba Tốt Đen, hai Vua ở rất xa. Thí Tốt để phong cấp.","tree":{"f":1,"ok":["b6"]},"key":"breakthrough"}]},
+ {"id":"mate2adv","name":"Chiếu hết nâng cao","adv":1,"items":[{"fen":"4kb1r/p2n1ppp/4q3/4p1B1/4P3/1Q6/PPP2PPP/2KR4 w k - 0 16","type":"tree","goal":"mate","n":2,"t":"Ván Opera của Morphy","d":"Năm 1858, Morphy kết thúc ván cờ bằng một nước thí Hậu tuyệt đẹp.","tree":{"m":{"Qb8+":{"r":"Nxb8","n":{"f":1,"ok":["Rd8#"]}}},"ok":["Qb8+"]},"key":"opera"},{"fen":"r4r1k/4Nppp/8/7Q/8/4R3/5PPP/6K1 w - - 0 1","type":"tree","goal":"mate","n":2,"t":"Chiếu hết Anastasia","d":"Mã e7 đã khóa hai ô g6 và g8. Thí Hậu để mở cột h cho Xe.","tree":{"m":{"Qxh7+":{"r":"Kxh7","n":{"f":1,"ok":["Rh3#"]}}},"ok":["Qxh7+"]},"key":"anastasia"},{"fen":"4r2k/6pp/7N/3Q4/8/8/6PP/6K1 w - - 0 1","type":"tree","goal":"mate","n":2,"t":"Chiếu ngạt Philidor","d":"Thí Hậu để Xe Đen tự nhốt Vua, rồi Mã ra đòn.","tree":{"m":{"Qg8+":{"r":"Rxg8","n":{"f":1,"ok":["Nf7#"]}}},"ok":["Qg8+"]},"key":"philidor2"},{"fen":"2kr3r/pp1n1ppp/2n5/8/5B2/2Q5/PPP2PPP/4KB1R w K - 0 1","type":"tree","goal":"mate","n":2,"t":"Chiếu hết Boden","d":"Vua Đen nhập thành cánh Hậu. Hai Tượng Trắng có thể bắt chéo nhau như cây kéo.","tree":{"m":{"Qxc6+":{"r":"bxc6","n":{"f":1,"ok":["Ba6#"]}}},"ok":["Qxc6+"]},"key":"boden"},{"fen":"rnb1kb1r/pp3ppp/2p5/4q3/4n3/3Q4/PPPB1PPP/2KR1BNR w kq - 0 9","type":"tree","goal":"mate","n":3,"t":"Réti – Tartakower 1910","d":"Ván cờ nổi tiếng: thí Hậu, rồi chiếu hết bằng Tượng.","tree":{"m":{"Qd8+":{"r":"Kxd8","n":{"m":{"Bg5+":{"r":"Kc7","n":{"f":1,"ok":["Bd8#"]}}},"ok":["Bg5+"]}}},"ok":["Qd8+"]},"key":"reti"},{"fen":"4r2k/6pp/8/3Q2N1/8/8/6PP/6K1 w - - 0 1","type":"tree","goal":"mate","n":4,"t":"Di sản Philidor","d":"Mẫu chiếu ngạt đầy đủ: Mã chiếu, chiếu đôi, thí Hậu, Mã chiếu hết. Còn một cách khác bằng Hậu, cách nào đúng thầy cũng chấm.","tree":{"m":{"Qf5":{"r":"g6","n":{"m":{"Qf6+":{"r":"Kg8","n":{"m":{"Qf7+":{"r":"Kh8","n":{"f":1,"ok":["Qxh7#"]}}},"ok":["Qf7+"]}}},"ok":["Qf6+"]}},"Nf7+":{"r":"Kg8","n":{"m":{"Nh6+":{"r":"Kh8","n":{"m":{"Qg8+":{"r":"Rxg8","n":{"f":1,"ok":["Nf7#"]}}},"ok":["Qg8+"]}}},"ok":["Nh6+"]}}},"ok":["Nf7+","Qf5"]},"key":"philidor4"}]},
+ {"id":"trap","name":"Bẫy khai cuộc","adv":1,"items":[{"fen":"rn1qkbnr/ppp2p1p/3p2p1/4N3/2B1P3/2N5/PPPP1PPP/R1BbK2R w KQkq - 0 6","type":"tree","goal":"mate","n":2,"t":"Bẫy Legal","d":"Đen vừa ăn Hậu của Trắng. Đó chính là cái bẫy.","tree":{"m":{"Bxf7+":{"r":"Ke7","n":{"f":1,"ok":["Nd5#"]}}},"ok":["Bxf7+"]},"key":"legal2"},{"fen":"rnbqkb1r/pppp1ppp/5n2/4N3/8/8/PPPPQPPP/RNB1KB1R w KQkq - 2 5","type":"tree","goal":"win","n":1,"t":"Bẫy Petrov","d":"Hậu Trắng ở e2 nhắm thẳng Vua e8, chỉ có Mã e5 đứng giữa.","tree":{"f":1,"ok":["Nc6+"]},"key":"petrov"},{"fen":"r1bqkb1r/pp1npppp/2p2n2/8/3PN3/8/PPP1QPPP/R1B1KBNR w KQkq - 3 6","type":"tree","goal":"mate","n":1,"t":"Bẫy Caro-Kann","d":"Đen vừa ra Mã f6 mà quên rằng Mã d7 đang chặn lối thoát của Vua.","tree":{"f":1,"ok":["Nd6#"]},"key":"caro"},{"fen":"r1bqkb1r/pppn1ppp/5n2/3N2B1/3P4/8/PP2PPPP/R2QKBNR b KQkq - 0 6","type":"tree","goal":"win","n":1,"t":"Bẫy Con Voi","d":"Trắng vừa ăn Tốt d5 bằng Mã, tưởng Mã f6 bị ghim. Thật ra không phải!","tree":{"f":1,"ok":["Nxd5"]},"key":"elephant"},{"fen":"r1bqkbnr/2p2ppp/p2p4/1p6/3QP3/1B6/PPP2PPP/RNB1K2R b KQkq - 0 8","type":"tree","goal":"win","n":1,"t":"Bẫy Thuyền Noah","d":"Hậu Trắng vừa ăn Tốt d4. Tượng b3 đang đứng ở chỗ nguy hiểm.","tree":{"f":1,"ok":["c5"]},"key":"noah"},{"fen":"r1bqkb1r/pppp1pp1/2n5/1B2p3/4P1p1/8/PPPP1PP1/RNBQNRK1 b kq - 1 7","type":"tree","goal":"win","n":1,"t":"Bẫy Cần Câu","d":"Trắng tham ăn Mã g4 và mở cột h. Hậu Đen nhảy vào tấn công.","tree":{"f":1,"ok":["Qh4"]},"key":"fishing"},{"fen":"r1b1kbnr/pppp1Npp/8/6q1/2BnP3/8/PPPP1PPP/RNBQK2R b KQkq - 0 5","type":"tree","goal":"win","n":1,"t":"Bẫy Blackburne–Shilling","d":"Mã Trắng vừa ăn f7, đánh Hậu và Xe. Hậu Đen có nước mạnh hơn là chạy.","tree":{"f":1,"ok":["Qxg2"]},"key":"bs3"},{"fen":"r1b1kbnr/pppp1Npp/8/8/3nq3/8/PPPPBP1P/RNBQKR2 b Qkq - 1 7","type":"tree","goal":"mate","n":3,"t":"Bẫy Blackburne–Shilling: kết thúc","d":"Trắng che chiếu bằng Tượng e2. Kết thúc đi!","tree":{"m":{},"ok":["Nf3#"]},"key":"bs3m"},{"fen":"r1b1k2r/ppppqppp/2n5/4n3/1PP2B2/5N2/1P1NPPPP/R2QKB1R b KQkq - 0 8","type":"tree","goal":"mate","n":1,"t":"Bẫy Budapest","d":"Trắng vừa ăn Tượng b4. Vua Trắng bị chính quân nhà vây quanh.","tree":{"f":1,"ok":["Nd3#"]},"key":"budapest"},{"fen":"r1b1kbnr/pppp1ppp/2n5/4P3/8/2B2N2/PqP1PPPP/RN1QKB1R b KQkq - 1 6","type":"tree","goal":"win","n":1,"t":"Bẫy Englund","d":"Hậu Đen đã ăn Tốt b2 và đánh Xe a1. Đưa thêm một quân vào cuộc.","tree":{"f":1,"ok":["Bb4"]},"key":"englund"},{"fen":"r1b1k1nr/pppp1ppp/2n5/4P3/8/2Q2N2/PqP1PPPP/RN2KB1R b KQkq - 0 8","type":"tree","goal":"mate","n":2,"t":"Bẫy Englund: kết thúc","d":"Trắng vừa ăn lại bằng Hậu c3. Ô c1 không còn ai giữ.","tree":{"m":{},"ok":["Qc1#"]},"key":"englund2"}]}
+];
+
+/* ---------- Khai cuộc (đã kiểm tra hợp lệ bằng python-chess) ---------- */
+const OPENINGS=[{"id":"italian","name":"Khai cuộc Ý (Giuoco Piano)","side":"w","lv":"Nền tảng","intro":"Khai cuộc thầy khuyên Indo dùng nhiều nhất khi cầm Trắng. Ra quân nhanh, Tượng nhắm vào ô f7 yếu của Đen, nhập thành sớm.","m":[["e4","Mở đầu bằng Tốt vua: chiếm trung tâm và mở đường cho Hậu, Tượng."],["e5","Đen đáp trả đối xứng, cũng giành trung tâm."],["Nf3","Mã ra và đánh ngay Tốt e5. Ra quân kèm đe dọa là cách ra quân tốt nhất."],["Nc6","Đen bảo vệ e5 bằng Mã."],["Bc4","Tượng lên c4 nhắm thẳng ô f7, ô chỉ có Vua Đen bảo vệ."],["Bc5","Đen cũng đưa Tượng lên nhắm f2."],["c3","Chuẩn bị đẩy d4 để lập trung tâm hai Tốt. Ô c3 nhường lại, Mã sẽ ra d2."],["Nf6","Đen ra Mã và đánh Tốt e4."],["d3","Bảo vệ e4 chắc chắn. Kiểu chơi chậm, an toàn, rất hợp thi đấu."],["d6","Đen củng cố e5, mở đường cho Tượng c8."],["O-O","Nhập thành: Vua vào góc an toàn, Xe ra gần trung tâm."],["O-O","Đen cũng nhập thành."],["Re1","Xe về cột e, sau này hỗ trợ đẩy d4."],["a6","Đen chuẩn bị b5 đuổi Tượng."],["Bb3","Rút Tượng về trước để không bị Tốt b5 đuổi mất nhịp. Tượng vẫn nhắm f7."],["Ba7","Đen cũng giấu Tượng khỏi nước d4."],["h3","Lỗ thở cho Vua và chặn Tượng Đen lên g4 ghim Mã. Xong khai cuộc, Trắng thế tốt."]]},{"id":"ruy","name":"Khai cuộc Tây Ban Nha","side":"w","lv":"Nâng cao","intro":"Khai cuộc của các nhà vô địch thế giới. Tượng gây sức ép lên Mã c6, Mã đó đang bảo vệ Tốt e5.","m":[["e4","Chiếm trung tâm."],["e5","Đen đối xứng."],["Nf3","Đánh e5."],["Nc6","Bảo vệ e5."],["Bb5","Tượng đánh Mã c6, quân đang giữ e5. Sức ép kéo dài suốt ván."],["a6","Đen hỏi Tượng: đổi hay lui?"],["Ba4","Giữ Tượng, tiếp tục nhắm Mã c6 từ xa."],["Nf6","Đen ra Mã, đánh e4."],["O-O","Nhập thành trước. Nếu Đen ăn e4, Trắng sẽ có Re1 lấy lại nhanh."],["Be7","Đen ra Tượng để chuẩn bị nhập thành."],["Re1","Bảo vệ e4 bằng Xe."],["b5","Đen đuổi Tượng."],["Bb3","Tượng về b3, vẫn nhắm f7."],["d6","Đen củng cố e5."],["c3","Chuẩn bị d4 và tạo chỗ cho Tượng lui về c2 khi cần."],["O-O","Đen nhập thành."],["h3","Chặn Tượng g4. Sau đó Trắng sẽ đẩy d4 chiếm trung tâm."]]},{"id":"qg","name":"Gambit Hậu","side":"w","lv":"Nâng cao","intro":"Khai cuộc bằng Tốt hậu. Trắng mời Đen ăn Tốt c4 để giành trung tâm.","m":[["d4","Tốt hậu chiếm trung tâm, được Hậu bảo vệ sẵn."],["d5","Đen chặn lại."],["c4","Gambit: mời ăn Tốt c4 để kéo Tốt d5 khỏi trung tâm."],["e6","Đen từ chối, giữ vững d5. Đây là phòng thủ chắc nhất."],["Nc3","Mã tăng sức ép lên d5."],["Nf6","Đen bảo vệ d5 thêm lần nữa."],["Bg5","Ghim Mã f6 vào Hậu d8. Mã f6 không dám rời để giữ d5."],["Be7","Đen gỡ ghim."],["e3","Mở đường cho Tượng f1."],["O-O","Đen nhập thành."],["Nf3","Ra Mã cuối cùng."],["Nbd7","Đen ra Mã."],["Rc1","Xe lên cột c, cột sẽ mở khi đổi Tốt c4 và d5."],["c6","Đen giữ d5 thật chắc."],["Bd3","Tượng nhắm về phía Vua Đen ở h7. Trắng sẵn sàng nhập thành."]]},{"id":"london","name":"Hệ thống London","side":"w","lv":"Nền tảng","intro":"Cách chơi dễ nhớ nhất: gần như lúc nào cũng xếp quân theo một mẫu, dù Đen đi gì.","m":[["d4","Chiếm trung tâm."],["d5","Đen đối xứng."],["Bf4","Tượng ra trước khi đẩy e3, để không bị nhốt sau Tốt."],["Nf6","Đen ra Mã."],["e3","Mở đường cho Tượng f1, giữ d4."],["e6","Đen làm tương tự."],["Nf3","Mã ra ô đẹp nhất."],["c5","Đen tấn công d4."],["c3","Tam giác Tốt c3–d4–e3: trung tâm vững như bức tường."],["Nc6","Đen tăng sức ép lên d4."],["Nbd2","Mã ra d2, không chặn Tốt c3."],["Bd6","Đen đòi đổi Tượng f4."],["Bg3","Giữ Tượng, không cho đổi dễ dàng."],["O-O","Đen nhập thành."],["Bd3","Tượng nhắm h7. Tiếp theo Trắng nhập thành, mẫu London hoàn thành."]]},{"id":"twoknights","name":"Phòng thủ Hai Mã (Đen)","side":"b","lv":"Nền tảng","intro":"Indo cầm Đen gặp khai cuộc Ý. Ra hai Mã nhanh, phản công Tốt e4.","m":[["e4","Trắng mở Tốt vua."],["e5","Đáp lại ngay ở trung tâm."],["Nf3","Trắng đánh e5."],["Nc6","Bảo vệ e5 bằng Mã, vừa ra quân."],["Bc4","Trắng nhắm f7."],["Nf6","Mã thứ hai ra, phản công e4 và che chắn Vua."],["d3","Trắng giữ e4."],["Be7","Ra Tượng chắc chắn, chuẩn bị nhập thành."],["O-O","Trắng nhập thành."],["O-O","Đen nhập thành ngay. Vua an toàn là ưu tiên số 1."],["Re1","Trắng đưa Xe về cột e."],["d6","Giữ e5 và mở đường cho Tượng c8."],["c3","Trắng chuẩn bị d4."],["Na5","Đuổi Tượng c4, quân nguy hiểm nhất của Trắng, rồi đổi nó nếu được."]]},{"id":"friedDef","name":"Chống tấn công Gan Rán (Đen)","side":"b","lv":"Nâng cao","intro":"Khi Trắng đi Mg5 nhắm f7, nhiều bạn cấp trường sẽ thử đòn này. Thầy dạy Indo cách đáp chuẩn.","m":[["e4",""],["e5",""],["Nf3",""],["Nc6",""],["Bc4",""],["Nf6","Phòng thủ Hai Mã."],["Ng5","Trắng đánh f7 bằng hai quân Mã và Tượng."],["d5","Chặn đường chéo của Tượng c4. Đây là nước đúng."],["exd5","Trắng ăn Tốt."],["Na5","Nước quan trọng nhất! KHÔNG ăn lại bằng Mã f6 (Mxd5 sẽ bị Mxf7 thí Mã tấn công Vua). Đuổi Tượng trước."],["Bb5+","Tượng chiếu."],["c6","Che chiếu bằng Tốt, vừa đánh Tượng."],["dxc6","Trắng ăn."],["bxc6","Ăn lại, mở cột b cho Xe."],["Be2","Tượng lui."],["h6","Đuổi Mã g5. Đen chịu mất 1 Tốt nhưng ra quân rất nhanh, thế cờ tốt."]]},{"id":"sicilian","name":"Phòng thủ Sicilia – Rồng (Đen)","side":"b","lv":"Nâng cao","intro":"Phòng thủ sắc bén nhất chống 1.e4. Tượng g7 như con rồng phun lửa dọc đường chéo dài.","m":[["e4",""],["c5","Giành ô d4 từ cánh, không đối xứng như e5."],["Nf3",""],["d6","Kiểm soát e5 và mở đường cho Tượng c8."],["d4","Trắng mở trung tâm."],["cxd4","Đổi Tốt cánh lấy Tốt trung tâm. Đen có thêm cột c nửa mở."],["Nxd4",""],["Nf6","Ra Mã, đánh e4, buộc Trắng bảo vệ."],["Nc3",""],["g6","Chuẩn bị đưa Tượng lên g7: thế Rồng."],["Be2",""],["Bg7","Tượng trên đường chéo dài a1–h8, nhắm thẳng vào trung tâm và cánh Hậu Trắng."],["O-O",""],["O-O","Nhập thành an toàn, sau Tượng g7 che chắn."],["Be3",""],["Nc6","Ra quân cuối, sẵn sàng đổi Mã d4 và đánh trên cột c."]]},{"id":"qgd","name":"Gambit Hậu từ chối (Đen)","side":"b","lv":"Nâng cao","intro":"Indo cầm Đen gặp 1.d4. Giữ vững Tốt d5, ra quân chắc chắn.","m":[["d4",""],["d5","Chiếm trung tâm."],["c4","Trắng mời ăn Tốt."],["e6","Từ chối. Tốt e6 giữ d5 rất chắc."],["Nc3",""],["Nf6","Thêm một quân giữ d5."],["Bg5","Trắng ghim Mã."],["Be7","Gỡ ghim ngay."],["e3",""],["O-O","Nhập thành sớm."],["Nf3",""],["h6","Hỏi Tượng: đổi hay lui?"],["Bh4",""],["b6","Chuẩn bị đưa Tượng c8 lên b7, Tượng này thường bị nhốt trong khai cuộc này."]]},{"id":"legal","name":"Bẫy Legal (Trắng)","side":"w","lv":"Bẫy","intro":"Bẫy nổi tiếng: Trắng bỏ Hậu để chiếu hết. Gặp đối thủ ham ăn quân là thắng ngay.","m":[["e4",""],["e5",""],["Nf3",""],["d6",""],["Bc4",""],["Bg4","Đen ghim Mã f3 vào Hậu d1."],["Nc3",""],["g6","Nước yếu của Đen. Bây giờ đòn đến."],["Nxe5","Mã bỏ chạy dù đang bị ghim! Hậu d1 bị bỏ lại cho Tượng ăn."],["Bxd1","Đen tham ăn Hậu. Nếu Đen đi dxe5, Trắng đi Hxg4 và hơn một Tượng."],["Bxf7+","Chiếu! Vua chỉ còn ô e7."],["Ke7",""],["Nd5#","Chiếu hết bằng ba quân nhẹ. Đây là chiếu hết Legal."]]},{"id":"blackburne","name":"Bẫy Blackburne–Shilling (Đen)","side":"b","lv":"Bẫy","intro":"Đen đặt bẫy: để Tốt e5 cho ăn, nếu Trắng tham thì bị chiếu hết.","m":[["e4",""],["e5",""],["Nf3",""],["Nc6",""],["Bc4",""],["Nd4","Nước bẫy! Bỏ trống e5. Thầy nói thật: đây không phải nước tốt nhất. Nếu Trắng không tham mà đi Mxd4 hoặc nhập thành, Đen sẽ kém hơn một chút. Chỉ đặt bẫy này khi đối thủ hay tham ăn quân."],["Nxe5","Trắng tham ăn Tốt. Đây là sai lầm."],["Qg5","Hậu đánh Mã e5 và Tốt g2 cùng lúc."],["Nxf7","Trắng tiếp tục tham, đánh Hậu và Xe."],["Qxg2","Ăn g2, đánh Xe h1."],["Rf1","Trắng cứu Xe."],["Qxe4+","Chiếu, Trắng chỉ có thể che bằng Tượng."],["Be2",""],["Nf3#","Chiếu hết ngạt! Vua Trắng bị chính quân nhà vây kín."]]},{"id":"scholarDef","name":"Chống chiếu hết 4 nước (Đen)","side":"b","lv":"Nền tảng","intro":"Bạn bè cùng trường rất hay đưa Hậu ra sớm. Thầy dạy Indo cách chặn và phạt lại.","m":[["e4",""],["e5",""],["Bc4","Tượng nhắm f7."],["Nc6","Ra quân bình thường."],["Qh5","Hậu và Tượng cùng nhắm f7: dọa Hxf7 chiếu hết."],["g6","Chặn Hậu bằng Tốt, vừa đuổi Hậu."],["Qf3","Hậu đổi hướng, vẫn nhắm f7."],["Nf6","Mã che chắn f7 ngay, vừa ra quân."],["Qb3","Hậu lại đi lần thứ ba, nhắm f7 từ đường khác."],["Qe7","Hậu Đen bảo vệ f7. Cách chắc chắn và dễ nhớ nhất. Đen đã ra quân nhiều hơn Trắng."],["Nc3",""],["Nd4","Phản công! Mã đuổi Hậu Trắng và dọa ăn c2. Trắng mất rất nhiều nhịp."]]}];
+
+/* ---------- Bài học ---------- */
+const LESSONS=[
+ {id:"L1",lv:1,t:"1. Giá trị quân",h:`<h2>Giá trị các quân cờ</h2>
+ <p>Mỗi quân có một "giá". Trước khi đổi quân, Indo cộng giá xem mình lời hay lỗ.</p>
+ <table class="val"><tr><th>Quân</th><th>Điểm</th></tr>
+ <tr><td>♟ Tốt</td><td class="n">1</td></tr><tr><td>♞ Mã</td><td class="n">3</td></tr><tr><td>♝ Tượng</td><td class="n">3</td></tr><tr><td>♜ Xe</td><td class="n">5</td></tr><tr><td>♛ Hậu</td><td class="n">9</td></tr><tr><td>♚ Vua</td><td class="n">vô giá</td></tr></table>
+ <div class="tip">Đổi Mã (3) lấy Xe (5) là lời 2 điểm. Đổi Hậu (9) lấy Xe (5) là lỗ 4 điểm.</div>
+ <h3>Tên ô trên bàn cờ</h3>
+ <p>Cột ghi chữ <b>a → h</b> (trái sang phải, nhìn từ phía Trắng), hàng ghi số <b>1 → 8</b>. Ô góc dưới bên phải của Trắng là h1. Ở giải thi, Indo sẽ phải ghi nước đi vào biên bản bằng các tên ô này.</p>`},
+ {id:"L2",lv:1,t:"2. Chiếu, chiếu hết, hòa pat",h:`<h2>Chiếu, chiếu hết và hòa pat</h2>
+ <ul><li><b>Chiếu</b>: Vua đang bị tấn công. Phải xử lý ngay bằng 1 trong 3 cách: <b>chạy</b>, <b>chặn</b>, hoặc <b>ăn</b> quân đang chiếu.</li>
+ <li><b>Chiếu hết</b>: Vua bị chiếu mà không còn cách nào trong 3 cách trên. Bên chiếu hết thắng ván.</li>
+ <li><b>Hòa pat</b>: Đến lượt đi, Vua <i>không bị chiếu</i> nhưng không còn nước đi hợp lệ nào. Ván cờ <b>hòa</b>, dù mình đang hơn quân rất nhiều.</li></ul>
+ <div class="mini"><figure><div class="board" data-fen="k7/2Q5/1K6/8/8/8/8/8 b - - 0 1"></div><figcaption>Đen đến lượt, không bị chiếu, không đi được: hòa pat. Trắng mất trận thắng.</figcaption></figure></div>
+ <div class="tip">Khi hơn nhiều quân, trước mỗi nước hãy hỏi: "Vua đối phương còn ô nào để đi không?" Nếu không còn mà mình lại không chiếu, đó là hòa pat.</div>`},
+ {id:"L3",lv:1,t:"3. Ba câu hỏi an toàn",h:`<h2>Ba câu hỏi trước mỗi nước đi</h2>
+ <p>Người mới thua chủ yếu vì để quân bị ăn miễn phí. Thói quen này quan trọng nhất trong cả khóa:</p>
+ <ol><li><b>Đối thủ vừa đi nước đó để làm gì?</b> Họ đang đe dọa ăn quân nào, chiếu ở đâu?</li>
+ <li><b>Quân nào của mình đang bị treo?</b> Treo là bị tấn công mà không có quân bảo vệ.</li>
+ <li><b>Mình có nước Chiếu – Ăn – Đe dọa nào không?</b> Luôn xét theo thứ tự đó.</li></ol>
+ <div class="tip">Giống như qua đường: nhìn trái, nhìn phải, rồi mới bước. Ba câu hỏi chỉ mất 10 giây nhưng cứu được rất nhiều ván.</div>
+ <p>Khi đã chọn được nước, hỏi thêm: "Đi xong, quân này có bị ăn không?"</p>`},
+ {id:"L4",lv:1,t:"4. Khai cuộc",h:`<h2>Năm nguyên tắc khai cuộc</h2>
+ <ol><li><b>Chiếm trung tâm</b>: nước đầu đi Tốt e4 hoặc d4.</li>
+ <li><b>Ra quân nhẹ</b>: đưa Mã và Tượng ra trước, Mã thường ra trước Tượng.</li>
+ <li><b>Nhập thành sớm</b>: đưa Vua vào góc an toàn trong khoảng 10 nước đầu.</li>
+ <li><b>Không đưa Hậu ra sớm</b>: Hậu dễ bị quân nhỏ đuổi, mất nhiều nước.</li>
+ <li><b>Không đi một quân hai lần</b> khi chưa ra hết quân, trừ khi phải tránh bị ăn.</li></ol>
+ <h3>Cạm bẫy chiếu hết 4 nước</h3>
+ <p>Ở cấp trường rất hay gặp: Trắng đưa Hậu lên h5 (hoặc f3) và Tượng lên c4, cùng nhắm vào ô f7.</p>
+ <div class="mini"><figure><div class="board" data-fen="r1bqkbnr/pppp1ppp/2n5/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR b KQkq - 3 3"></div><figcaption>Đen phải phòng thủ f7 ngay, ví dụ đi Hậu e7 hoặc Tốt g6. Đi Mf6 là bị chiếu hết.</figcaption></figure></div>
+ <div class="tip">Cầm quân Đen: thấy Hậu và Tượng cùng nhắm f7 thì chặn trước tiên.</div>`},
+ {id:"L5",lv:1,t:"5. Đòn đôi, ghim, xiên",h:`<h2>Ba đòn chiến thuật cơ bản</h2>
+ <h3>Đòn đôi (bắt đôi)</h3><p>Một quân tấn công hai quân cùng lúc. Đối thủ chỉ cứu được một. Mã là quân bắt đôi giỏi nhất vì nó nhảy qua quân khác.</p>
+ <div class="mini"><figure><div class="board" data-fen="r3k3/2N5/8/8/8/8/8/4K3 b - - 0 1"></div><figcaption>Mã c7 chiếu Vua và đánh Xe a8 cùng lúc.</figcaption></figure></div>
+ <h3>Ghim</h3><p>Quân bị ghim không dám đi vì sau lưng nó là quân quý hơn (thường là Vua). Ghim vào Vua thì quân đó không được đi theo luật.</p>
+ <div class="mini"><figure><div class="board" data-fen="4k3/3n4/8/1B6/8/8/8/4K3 b - - 0 1"></div><figcaption>Tượng b5 ghim Mã d7 vào Vua e8.</figcaption></figure></div>
+ <h3>Xiên</h3><p>Ngược với ghim: quân quý đứng trước. Nó buộc phải tránh, quân phía sau bị ăn.</p>
+ <div class="tip">Mẹo tìm đòn: nhìn xem quân nào của đối thủ <b>đứng thẳng hàng</b> hoặc <b>không được bảo vệ</b>. Đó là mục tiêu.</div>`},
+ {id:"L6",lv:1,t:"6. Mẫu chiếu hết",h:`<h2>Bốn mẫu chiếu hết phải thuộc</h2>
+ <ul><li><b>Hàng cuối</b>: Vua bị chính Tốt nhà nhốt, Xe hoặc Hậu chiếu ở hàng cuối.</li>
+ <li><b>Hai Xe cuốn chiếu</b>: một Xe khóa một hàng, Xe kia chiếu hàng kế tiếp, luân phiên đẩy Vua ra mép bàn.</li>
+ <li><b>Hậu có yểm trợ</b>: Hậu áp sát Vua, có quân khác bảo vệ để Vua không ăn được Hậu.</li>
+ <li><b>Mã chiếu ngạt</b>: Vua bị quân nhà vây kín, Mã nhảy vào chiếu.</li></ul>
+ <div class="mini"><figure><div class="board" data-fen="3R2k1/5ppp/8/8/8/8/5PPP/6K1 b - - 0 1"></div><figcaption>Chiếu hết hàng cuối.</figcaption></figure>
+ <figure><div class="board" data-fen="k5R1/7R/8/8/8/8/8/K7 b - - 0 1"></div><figcaption>Hai Xe cuốn chiếu.</figcaption></figure></div>
+ <div class="tip">Cách phòng thủ hàng cuối: khi rảnh, đẩy một Tốt trước Vua lên một ô để Vua có "lỗ thở".</div>`},
+ {id:"L7",lv:1,t:"7. Tàn cuộc",h:`<h2>Tàn cuộc: thắng khi chỉ còn ít quân</h2>
+ <h3>Hậu + Vua chiếu hết Vua</h3>
+ <ol><li>Dùng Hậu thu hẹp "chiếc hộp" quanh Vua đối phương, đi cách Vua đó một nước Mã.</li>
+ <li>Khi Vua đối phương đã ở mép bàn, <b>dừng Hậu lại</b> và đưa Vua mình đến gần.</li>
+ <li>Chiếu hết ở mép bàn, Vua mình bảo vệ Hậu hoặc chặn ô thoát.</li></ol>
+ <h3>Xe + Vua</h3><p>Tương tự, nhưng Xe yếu hơn nên Vua mình phải đứng <b>đối mặt</b> Vua đối phương (cách một ô), rồi Xe chiếu ở mép bàn.</p>
+ <div class="mini"><figure><div class="board" data-fen="R3k3/8/4K3/8/8/8/8/8 b - - 0 1"></div><figcaption>Xe + Vua: hai Vua đối mặt, Xe chiếu hết.</figcaption></figure></div>
+ <h3>Phong cấp</h3><p>Tốt đi tới hàng cuối được đổi thành Hậu. Khi hai bên ít quân, hãy đẩy Tốt, có Vua mình đi theo hộ tống.</p>
+ <div class="tip">Luôn nhớ bài 2: khi Vua đối phương chỉ còn ít ô, kiểm tra xem có lỡ tay làm hòa pat không.</div>`},
+ {id:"L8",lv:1,t:"8. Khi đi thi",h:`<h2>Những điều cần biết khi đi thi</h2>
+ <ul><li><b>Chạm quân nào đi quân đó</b>: đã chạm vào quân mình thì phải đi quân đó (nếu có nước hợp lệ). Chạm quân đối phương thì phải ăn nó nếu ăn được. Muốn chỉnh quân cho ngay ngắn, nói "chỉnh quân" trước.</li>
+ <li><b>Buông tay là xong nước</b>: quân đã đặt xuống ô mới và buông tay thì không đổi được.</li>
+ <li><b>Đồng hồ</b>: đi xong mới bấm đồng hồ, bấm bằng tay vừa đi quân. Hết giờ là thua.</li>
+ <li><b>Ghi biên bản</b>: ghi nước đi theo tên ô, ví dụ Mf3, Tc4, e4. Hỏi trọng tài nếu giải không yêu cầu.</li>
+ <li><b>Ngồi trên tay ngồi</b>: thấy nước hay, đừng đi ngay. Đọc lại ba câu hỏi an toàn rồi mới đi.</li>
+ <li><b>Thua một ván, quên nó đi</b>. Mỗi ván là một trận mới.</li></ul>
+ <div class="tip">Ký hiệu tiếng Việt: V = Vua, H = Hậu, X = Xe, T = Tượng, M = Mã, Tốt thì không ghi chữ. Một số giải dùng ký hiệu tiếng Anh: K, Q, R, B, N.</div>`},
+ {id:"L9",lv:2,t:"9. Tính toán như kiện tướng",h:`<h2>Tính toán như kiện tướng</h2>
+ <p class="coach">Thầy thấy Indo đã nắm luật và đòn cơ bản rất nhanh. Từ bài này, thầy dạy Indo cách <b>suy nghĩ</b>, chứ không chỉ học thuộc đòn.</p>
+ <h3>Bước 1: Liệt kê nước ép buộc theo thứ tự C – A – Đ</h3>
+ <ol><li><b>Chiếu</b>: liệt kê <i>mọi</i> nước chiếu, kể cả nước thí quân trông "vô lý".</li>
+ <li><b>Ăn quân</b>: mọi nước ăn, kể cả ăn quân được bảo vệ.</li>
+ <li><b>Đe dọa</b>: nước nào dọa chiếu hết hoặc dọa ăn quân lớn.</li></ol>
+ <p>Đối thủ buộc phải đáp lại nước ép buộc, nên Indo tính được trước. Nước im lặng thì đối thủ có quá nhiều lựa chọn.</p>
+ <h3>Bước 2: Đếm quân tấn công và quân bảo vệ</h3>
+ <p>Trước khi ăn một quân được bảo vệ, đếm: bao nhiêu quân mình đánh vào ô đó, bao nhiêu quân đối phương giữ ô đó. Ăn trước bằng quân <b>rẻ nhất</b>.</p>
+ <div class="mini"><figure><div class="board" data-fen="r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3"></div><figcaption>Tốt e5: Mã f3 đánh (1 quân). Mã c6 giữ (1 quân). Mxe5 thì Đen ăn lại Mxe5, Trắng mất Mã 3 điểm lấy Tốt 1 điểm. Không nên ăn.</figcaption></figure></div>
+ <h3>Bước 3: Kiểm tra lần cuối (2 giây cứu cả ván)</h3>
+ <p>Chọn xong nước, thầy muốn Indo nhìn lại bàn cờ <b>từ phía đối thủ</b>: "Nếu mình là đối thủ, mình sẽ chiếu ở đâu? ăn gì?"</p>
+ <div class="tip"><b>Thầy giao bài:</b> mỗi bài trong bộ Đòn phối hợp, trước khi chạm quân, Indo nói to ít nhất 2 nước chiếu hoặc ăn quân có thể đi.<br><button class="btn" data-go="set:combo">Mở bộ Đòn phối hợp</button></div>`},
+ {id:"L10",lv:2,t:"10. Đòn phối hợp nâng cao",h:`<h2>Bảy loại đòn phối hợp</h2>
+ <p class="coach">Đòn đôi, ghim, xiên là "chữ cái". Đòn phối hợp là ghép chữ thành câu: thí một quân để mở đường cho đòn chính.</p>
+ <ul><li><b>Thu hút</b>: thí quân để kéo quân đối phương (thường là Vua) vào một ô xấu.</li>
+ <li><b>Đánh lạc hướng</b>: kéo quân phòng thủ ra khỏi nhiệm vụ của nó.</li>
+ <li><b>Phá quân phòng thủ</b>: ăn hoặc đổi quân đang bảo vệ mục tiêu.</li>
+ <li><b>Quá tải</b>: một quân phải bảo vệ hai việc cùng lúc, đánh vào một việc là việc kia sụp đổ.</li>
+ <li><b>Chiếu mở</b>: một quân đi ra, quân đứng sau nó chiếu. Quân đi ra được tự do đánh bất cứ đâu.</li>
+ <li><b>Chiếu đôi</b>: hai quân cùng chiếu. Vua bắt buộc phải chạy, không chặn, không ăn được.</li>
+ <li><b>Nước trung gian</b>: trước khi ăn lại theo kiểu "đương nhiên", chen vào một nước chiếu hoặc đe dọa mạnh hơn.</li></ul>
+ <h3>Ván cờ "Opera" của Morphy (1858)</h3>
+ <p>Morphy thí Hậu ở b8 để <b>đánh lạc hướng</b> Mã d7, quân đang che cột d. Mã ăn Hậu, cột d mở, Xe chiếu hết.</p>
+ <div class="mini"><figure><div class="board" data-fen="1n1Rkb1r/p4ppp/4q3/4p1B1/4P3/8/PPP2PPP/2K5 b k - 1 17"></div><figcaption>Thế cuối: Xe d8 chiếu hết, Tượng g5 giữ ô e7.</figcaption></figure></div>
+ <div class="tip"><b>Mẹo của thầy:</b> thấy Vua đối phương bị vây mà chỉ có một quân che chắn, hãy hỏi: "Có thể kéo quân đó đi bằng cách thí quân không?"<br><button class="btn" data-go="set:mate2adv">Luyện chiếu hết nâng cao</button></div>`},
+ {id:"L11",lv:2,t:"11. Mẫu chiếu hết nâng cao",h:`<h2>Năm mẫu chiếu hết có tên</h2>
+ <p class="coach">Kiện tướng không tính từng nước một. Họ nhận ra <b>mẫu hình</b> rồi mới tính. Thuộc năm mẫu này, Indo sẽ "thấy" đòn nhanh hơn.</p>
+ <div class="mini">
+ <figure><div class="board" data-fen="r4r2/4Nppk/8/8/8/7R/5PPP/6K1 b - - 1 2"></div><figcaption><b>Anastasia</b>: Mã e7 khóa g6, g8. Xe chiếu theo cột h.</figcaption></figure>
+ <figure><div class="board" data-fen="6rk/5Npp/8/8/8/8/6PP/6K1 b - - 1 2"></div><figcaption><b>Chiếu ngạt Philidor</b>: thí Hậu ở g8, Xe ăn rồi tự nhốt Vua, Mã chiếu.</figcaption></figure>
+ <figure><div class="board" data-fen="2kr3r/p2n1ppp/B1p5/8/5B2/8/PPP2PPP/4K2R b K - 1 2"></div><figcaption><b>Boden</b>: hai Tượng chéo nhau trước Vua đã nhập thành cánh Hậu.</figcaption></figure>
+ <figure><div class="board" data-fen="rn1q1bnr/ppp1kB1p/3p2p1/3NN3/4P3/8/PPPP1PPP/R1BbK2R b KQ - 2 7"></div><figcaption><b>Legal</b>: bỏ Hậu, ba quân nhẹ chiếu hết.</figcaption></figure>
+ <figure><div class="board" data-fen="1n1Rkb1r/p4ppp/4q3/4p1B1/4P3/8/PPP2PPP/2K5 b k - 1 17"></div><figcaption><b>Opera (Morphy)</b>: Xe chiếu theo cột vừa được mở.</figcaption></figure>
+ </div>
+ <h3>Quà Hy Lạp: thí Tượng ở h7</h3>
+ <p>Khi Đen nhập thành cánh Vua, Tốt e5 của Trắng đuổi Mã f6 đi, Tượng d3 nhắm h7 và Mã f3 sẵn sàng nhảy g5: thí <b>Txh7+</b>! Vua ăn thì Mg5+ và Hậu lên h5 tấn công.</p>
+ <div class="mini"><figure><div class="board" data-fen="rnbq1rk1/pppn1ppp/4p3/3pP3/1b1P4/2NB1N2/PPP2PPP/R1BQK2R w KQ - 5 7"></div><figcaption>Khai cuộc Pháp: Đen nhập thành quá sớm. Đủ ba điều kiện, Trắng thí Txh7+ và thắng. Thế này có trong bộ Đòn phối hợp.</figcaption></figure></div>
+ <div class="tip"><button class="btn" data-go="set:mate2adv">Luyện các mẫu này</button></div>`},
+ {id:"L12",lv:2,t:"12. Kế hoạch trung cuộc",h:`<h2>Khi không có đòn thì làm gì?</h2>
+ <p class="coach">Phần lớn thời gian trong ván không có đòn ngay. Lúc đó người mới đi lung tung, còn người giỏi <b>cải thiện quân</b>. Thầy cho Indo năm câu hỏi.</p>
+ <ol><li><b>Quân nào của mình tệ nhất?</b> Đưa nó đến ô tốt hơn. Mã ở mép bàn, Tượng bị Tốt nhà chặn là quân tệ.</li>
+ <li><b>Cột nào mở?</b> Cột không có Tốt là đường cao tốc cho Xe. Ai chiếm trước, người đó mạnh.</li>
+ <li><b>Xe có lên được hàng 7 không?</b> Xe ở hàng 7 ăn Tốt và nhốt Vua đối phương.</li>
+ <li><b>Có ô tiền đồn cho Mã không?</b> Ô ở giữa bàn, Tốt đối phương không đuổi được, có Tốt mình bảo vệ.</li>
+ <li><b>Tốt nào yếu?</b> Tốt cô lập (không có Tốt bên cạnh), Tốt chồng (hai Tốt cùng cột) là mục tiêu tấn công lâu dài.</li></ol>
+ <div class="mini"><figure><div class="board" data-fen="6k1/pp3ppp/8/3N4/8/8/PP3PPP/6K1 w - - 0 1"></div><figcaption>Mã ở trung tâm khống chế 8 ô. Ở góc bàn nó chỉ khống chế 2 ô.</figcaption></figure>
+ <figure><div class="board" data-fen="6k1/1R3ppp/8/8/8/8/5PPP/6K1 w - - 0 1"></div><figcaption>Xe hàng 7: nhốt Vua Đen ở hàng cuối.</figcaption></figure></div>
+ <h3>Quy tắc đổi quân</h3>
+ <ul><li>Hơn quân: <b>đổi quân</b> (nhất là Hậu) để tiến vào tàn cuộc dễ thắng.</li>
+ <li>Thua quân: <b>tránh đổi</b>, giữ nhiều quân để tìm cơ hội.</li>
+ <li>Đang bị tấn công: đổi bớt quân tấn công của đối phương.</li></ul>
+ <div class="tip"><b>Thầy giao bài:</b> đánh 2 ván mức Học sinh, bật "Thầy nhắc khi đi hớ". Sau mỗi 5 nước, tự hỏi năm câu trên.<br><button class="btn" data-go="play:full">Đánh với máy</button></div>`},
+ {id:"L13",lv:2,t:"13. Tàn cuộc Tốt: đối đầu",h:`<h2>Tàn cuộc Tốt: Vua đối đầu và hình vuông</h2>
+ <p class="coach">Ở cấp Trường, rất nhiều ván kết thúc bằng tàn cuộc Vua và Tốt. Biết hai luật này, Indo thắng được những ván người khác hòa.</p>
+ <h3>Đối đầu (opposition)</h3>
+ <p>Hai Vua đứng thẳng hàng, cách nhau đúng 1 ô. Bên <b>không phải đi</b> là bên "giữ đối đầu" và thắng cuộc giành ô. Vua kia buộc phải nhường đường.</p>
+ <div class="mini"><figure><div class="board" data-fen="8/8/8/3k4/8/3K4/3P4/8 b - - 0 1"></div><figcaption>Đen phải đi và mất đối đầu. Vua Trắng tiến lên, Tốt phong cấp.</figcaption></figure></div>
+ <ul><li>Vua <b>đi trước Tốt</b>, đừng đẩy Tốt vội.</li>
+ <li>Vua đứng ở hàng 6 trước Tốt của mình là <b>luôn thắng</b> (trừ Tốt cột a, h).</li>
+ <li>Tốt cột a hoặc h: Vua phòng thủ chui được vào góc là hòa.</li></ul>
+ <h3>Quy tắc hình vuông</h3>
+ <p>Vẽ hình vuông từ Tốt đến hàng phong cấp. Nếu Vua đối phương bước vào được hình vuông đó thì đuổi kịp Tốt. Không vào được thì Tốt phong Hậu.</p>
+ <div class="mini"><figure><div class="board" data-fen="8/8/8/7k/P7/8/8/K7 w - - 0 1"></div><figcaption>Hình vuông của Tốt a4 là a4–d4–d8–a8. Vua h5 không vào kịp: Trắng thắng.</figcaption></figure></div>
+ <div class="tip"><button class="btn" data-go="play:kpk_opp">Luyện thế đối đầu</button> <button class="btn" data-go="play:square">Luyện thế hình vuông</button></div>`},
+ {id:"L14",lv:2,t:"14. Tàn cuộc Xe",h:`<h2>Tàn cuộc Xe: Lucena và Philidor</h2>
+ <p class="coach">Đây là kiến thức của đội tuyển. Thầy dạy Indo hai thế quan trọng nhất trong cờ vua.</p>
+ <h3>Thế Lucena: "xây cầu" để thắng</h3>
+ <div class="mini"><figure><div class="board" data-fen="1K1k4/1P6/8/8/8/8/r7/2R5 w - - 0 1"></div><figcaption>Vua Trắng kẹt trước Tốt. Bước 1: Xe chiếu đuổi Vua Đen xa thêm một cột (Xd1+). Bước 2: Xe lên hàng 4. Bước 3: Vua ra, khi Xe Đen chiếu thì Xe Trắng chặn ở hàng 4 làm "cây cầu".</figcaption></figure></div>
+ <h3>Thế Philidor: giữ hòa khi thua 1 Tốt</h3>
+ <div class="mini"><figure><div class="board" data-fen="4k3/8/1r6/4PK2/8/8/8/7R b - - 0 1"></div><figcaption>Xe Đen đứng ở hàng 6, không cho Vua Trắng tiến lên. Khi Tốt đẩy lên hàng 6, Xe chạy về hàng 1 chiếu từ phía sau.</figcaption></figure></div>
+ <ul><li>Xe đặt <b>phía sau</b> Tốt thông là vị trí tốt nhất, cho cả bên tấn công và phòng thủ.</li>
+ <li>Vua phải <b>chủ động</b>, tiến về phía Tốt.</li></ul>
+ <div class="tip"><button class="btn" data-go="play:lucena">Luyện thế Lucena với máy</button></div>`},
+ {id:"L15",lv:2,t:"15. Bộ khai cuộc của Indo",h:`<h2>Bộ khai cuộc thầy chọn cho Indo</h2>
+ <p class="coach">Không cần biết hết mọi khai cuộc. Thầy chọn cho Indo một bộ nhỏ, chắc chắn, đi sâu 7–8 nước, để vào trung cuộc với thế tốt và không sợ bẫy.</p>
+ <table class="val"><tr><th>Tình huống</th><th>Indo chơi</th></tr>
+ <tr><td>Cầm Trắng</td><td>Khai cuộc Ý (1.e4 e5 2.Mf3 Mc6 3.Tc4). Nếu thích chơi chắc: Hệ thống London (1.d4, 2.Tf4).</td></tr>
+ <tr><td>Cầm Đen, gặp 1.e4</td><td>1…e5 và Phòng thủ Hai Mã. Nếu thích chơi sắc: Sicilia Rồng.</td></tr>
+ <tr><td>Cầm Đen, gặp 1.d4</td><td>Gambit Hậu từ chối (1…d5 2.c4 e6).</td></tr></table>
+ <h3>Ba bẫy phải biết để tránh</h3>
+ <ul><li><b>Chiếu hết 4 nước</b>: chặn bằng g6, Mf6, He7.</li>
+ <li><b>Tấn công Gan Rán</b> (Mg5 nhắm f7): sau d5 exd5, đi <b>Ma5</b>, đừng ăn lại bằng Mã.</li>
+ <li><b>Bẫy Legal</b>: khi Tượng Đen ghim Mã f3, đừng để Mã e5 nhảy vào miễn phí.</li></ul>
+ <div class="tip"><b>Thầy giao bài:</b> mỗi ngày đi lại 2 khai cuộc trong tab Khai cuộc cho đến khi không sai nước nào.<br><button class="btn" data-go="open:italian">Học khai cuộc Ý</button> <button class="btn" data-go="open:twoknights">Học Phòng thủ Hai Mã</button></div>`},
+ {id:"L16",lv:2,t:"16. Tâm lý và thời gian",h:`<h2>Tâm lý thi đấu và quản lý thời gian</h2>
+ <p class="coach">Nhiều bạn giỏi cờ vẫn thua vì vội, vì sợ, hoặc vì hết giờ. Thầy dặn Indo mấy điều này trước khi vào phòng thi.</p>
+ <h3>Chia thời gian</h3>
+ <ul><li>Khai cuộc đã thuộc: đi nhanh, giữ thời gian cho trung cuộc.</li>
+ <li>Thế cờ căng, có nhiều nước chiếu và ăn quân: <b>dừng lại, tính kỹ</b>. Đây là lúc đáng dùng thời gian nhất.</li>
+ <li>Còn dưới 2 phút: chơi đơn giản, an toàn, không thí quân mạo hiểm.</li></ul>
+ <h3>Khi đang hơn</h3>
+ <p>Đơn giản hóa. Đổi quân, giữ Vua an toàn, đừng tham ăn thêm nếu phải mạo hiểm. Kiểm tra hòa pat trước mỗi nước.</p>
+ <h3>Khi đang thua</h3>
+ <p>Đừng bỏ cuộc. Giữ nhiều quân, tìm bẫy, đặt câu hỏi khó cho đối thủ. Ở cấp Trường, đối thủ đang thắng rất hay chủ quan.</p>
+ <h3>Giữa các ván</h3>
+ <p>Uống nước, đi lại vài bước. Thắng hay thua ván trước, ván sau là một trận mới.</p>
+ <div class="tip"><b>Lời thầy:</b> Indo học nhanh, nhưng trong phòng thi điều quan trọng nhất là <b>bình tĩnh</b>. Ngồi trên tay, hỏi ba câu an toàn, rồi mới đi. Thầy tin Indo làm được!</div>`}
+];
+
+/* ---------- Lộ trình 12 ngày ---------- */
+const DAYS=[
+ {t:"Làm quen bàn cờ",do:["Học bài 1: giá trị quân và tên ô","Đánh 1 ván với máy mức Tập sự, xem điểm quân hai bên"],L:"L1",P:1},
+ {t:"Chiếu và chiếu hết",do:["Học bài 2","Làm bài 1–3 bộ Chiếu hết 1 nước"],L:"L2",S:"m1"},
+ {t:"Không để mất quân",do:["Học bài 3, đọc to ba câu hỏi","Đánh 2 ván mức Tập sự, bật Soi quân treo"],L:"L3",P:1},
+ {t:"Khai cuộc đúng cách",do:["Học bài 4","Làm bài 8 và 10 bộ Chiếu hết 1 nước","Đánh 1 ván với máy, làm đủ 5 nguyên tắc"],L:"L4",S:"m1",P:1},
+ {t:"Đòn bắt đôi",do:["Học bài 5 phần Đòn đôi","Làm bài 1–4 bộ Đòn chiến thuật"],L:"L5",S:"tac"},
+ {t:"Ghim, xiên, quân treo",do:["Học tiếp bài 5","Làm bài 5–10 bộ Đòn chiến thuật","Đánh 1 ván mức Học sinh"],L:"L5",S:"tac",P:1},
+ {t:"Mẫu chiếu hết",do:["Học bài 6","Làm hết bộ Chiếu hết 1 nước"],L:"L6",S:"m1"},
+ {t:"Tàn cuộc Hậu",do:["Học bài 7 phần Hậu + Vua","Bày bàn thật: Hậu + Vua chiếu hết Vua, tập 3 lần"],L:"L7"},
+ {t:"Tàn cuộc Xe, phong cấp",do:["Học tiếp bài 7","Bày bàn thật: Xe + Vua chiếu hết, tập 3 lần"],L:"L7"},
+ {t:"Chiếu hết 2 nước",do:["Làm hết bộ Chiếu hết 2 nước","Làm bộ Ôn bài sai"],L:"L6",S:"m2"},
+ {t:"Tổng ôn và ván thử",do:["Làm hết bộ Ôn bài sai","Đánh 2 ván mức Học sinh, tắt Soi quân treo, tự ghi biên bản ra giấy"],S:"review",P:1},
+ {t:"Sẵn sàng đi thi",do:["Học bài 8: luật thi đấu","Thử 1 ván mức Đội tuyển, thua cũng không sao. Ngủ sớm"],L:"L8",P:1},
+ {ph:2,t:"Tính toán như kiện tướng",do:["Học bài 9: Chiếu – Ăn – Đe dọa, đếm quân","Làm bài 1–4 bộ Đòn phối hợp, nói to các nước ép buộc trước khi đi"],L:"L9",S:"combo"},
+ {ph:2,t:"Đòn phối hợp",do:["Học bài 10","Làm hết bộ Đòn phối hợp","Làm 5 bài đầu bộ Bẫy khai cuộc"],L:"L10",S:"combo"},
+ {ph:2,t:"Mẫu chiếu hết nâng cao",do:["Học bài 11","Làm hết bộ Chiếu hết nâng cao"],L:"L11",S:"mate2adv"},
+ {ph:2,t:"Bộ khai cuộc của Indo",do:["Học bài 15","Tab Khai cuộc: Khai cuộc Ý, Phòng thủ Hai Mã, Chống Gan Rán, không sai nước nào","Đánh tiếp với máy từ cuối khai cuộc"],L:"L15",O:"italian"},
+ {ph:2,t:"Kế hoạch trung cuộc",do:["Học bài 12","Đánh 2 ván mức Học sinh, bật Thầy nhắc","Làm hết bộ Bẫy khai cuộc"],L:"L12",S:"trap",P:1},
+ {ph:2,t:"Tàn cuộc Tốt và Xe",do:["Học bài 13 và 14","Luyện thế: Hậu + Vua, Xe + Vua, Giành đối đầu, Hình vuông"],L:"L13",D:"kqk"},
+ {ph:2,t:"Tổng duyệt",do:["Học bài 16","Làm bộ Ôn bài sai","Đánh 1 ván mức Đội tuyển, tắt Thầy nhắc và Soi quân treo"],L:"L16",S:"review",P:1}
+];
+
+/* ---------- Lưu tiến độ ---------- */
+const KEY="covua-captoc-v1";
+let state={days:[],solved:{},miss:{}};
+try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.solved){state=s;state.miss=state.miss||{};}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}updateMeter();}
+SETS.forEach(S=>S.items.forEach((it,i)=>{it.uid=it.key?S.id+"-"+it.key:S.id+"-"+i;it.cat=S.name;}));
+const ALL=SETS.flatMap(S=>S.items);
+const REVIEW={id:"review",name:"Ôn bài sai",items:[]};
+function refreshReview(){REVIEW.items=ALL.filter(it=>state.miss[it.uid]);}
+const totalPuzzles=ALL.length;
+function solvedCount(){return ALL.filter(it=>state.solved[it.uid]).length}
+function updateMeter(){
+  const pct=Math.round(((state.days.length/DAYS.length)+(solvedCount()/totalPuzzles))/2*100);
+  document.getElementById("meterTxt").textContent=pct+"%";
+  document.getElementById("meterBar").style.width=pct+"%";
+}
+
+/* ---------- Lời động viên ---------- */
+const NAME="Indo";
+const DAILY=[
+ "Mỗi kiện tướng đều từng là người mới. Hôm nay Indo học thêm một chút là đã giỏi hơn hôm qua.",
+ "Không cần học thật nhiều, chỉ cần học đều mỗi ngày. Nước chảy đá mòn, Indo ạ.",
+ "Thua một ván là học được một bài. Người giỏi cờ là người dám xem lại ván thua.",
+ "Trước mỗi nước đi, hỏi ba câu an toàn. Indo bình tĩnh thì quân cờ cũng bình tĩnh.",
+ "Bài khó là bài giúp mình lớn nhanh nhất. Thử thêm một lần nữa nhé Indo!",
+ "Hôm nay chỉ cần giải đúng một bài mới là đã có một chiến thắng nhỏ.",
+ "Cờ vua là môn thể thao của cái đầu. Mỗi ngày tập 30 phút, đầu óc Indo sẽ nhanh nhạy hơn.",
+ "Sai cũng không sao. Bài sai sẽ nằm trong Ôn bài sai để Indo chinh phục lại.",
+ "Đối thủ cũng đang lo lắng như mình. Ai chăm chỉ hơn, người đó tự tin hơn.",
+ "Hãy tự hào về từng ngày Indo đã cố gắng, dù thắng hay thua.",
+ "Ngồi trên tay, nghĩ kỹ rồi mới đi. Kiên nhẫn là vũ khí mạnh nhất của người chơi cờ.",
+ "Mỗi bài tập là một viên gạch. Đủ gạch rồi thì Indo sẽ có cả một lâu đài.",
+ "Chỉ còn ít ngày nữa là thi. Cố lên Indo, cả nhà luôn ủng hộ Indo!",
+ "Điều quan trọng không phải là thắng hết, mà là hôm nay Indo giỏi hơn hôm qua."
+];
+const WIN_MSG=[
+ "Chính xác! Giỏi lắm Indo!","Tuyệt vời! Indo nhìn ra đòn rồi đấy.","Đúng rồi! Đầu óc nhanh nhạy quá.",
+ "Xuất sắc! Cứ đà này là tự tin đi thi.","Hay quá Indo! Bài tiếp theo nào.","Chuẩn luôn! Kiện tướng tương lai đây rồi."
+];
+const TRY_MSG=[
+ "Chưa đúng. Không sao, sai là để học. Nghĩ lại ba câu hỏi an toàn rồi thử lại nhé Indo.",
+ "Gần được rồi! Nhìn lại cả bàn cờ: chiếu, ăn quân hay đe dọa, nước nào mạnh nhất?",
+ "Thử lại nhé Indo. Người giỏi cờ cũng phải tính nhiều lần mới ra.",
+ "Chưa phải nước này. Hít một hơi, nhìn lại toàn bàn cờ rồi chọn lại."
+];
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function todayKey(){const d=new Date();return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();}
+function renderCheer(extra){
+  const h=new Date().getHours();
+  const part=h<11?"Chào buổi sáng":h<14?"Chào buổi trưa":h<18?"Chào buổi chiều":"Chào buổi tối";
+  document.getElementById("greet").textContent=part+", "+NAME+"!";
+  const n=(state.visits||[]).length;
+  document.getElementById("streak").textContent=n>1?"Ngày luyện tập thứ "+n:"Ngày luyện tập đầu tiên";
+  const dayIdx=Math.floor((Date.now()-new Date(new Date().getFullYear(),0,0))/864e5);
+  document.getElementById("quote").textContent=extra||DAILY[dayIdx%DAILY.length];
+}
+state.visits=state.visits||[];
+if(!state.visits.includes(todayKey())){state.visits.push(todayKey());try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+
+/* ---------- Tabs ---------- */
+const views=["plan","learn","train","open","play","prog"];
+function show(v){
+  views.forEach(x=>{document.getElementById("view-"+x).hidden=x!==v;document.getElementById("tab-"+x).setAttribute("aria-selected",x===v);});
+  if(v==="prog")renderProg();
+  if(v==="play")pRedraw();
+}
+document.querySelectorAll("nav.tabs button").forEach(b=>b.onclick=()=>show(b.dataset.view));
+
+/* ---------- Vẽ bàn cờ ---------- */
+function drawBoard(el,game,opts={}){
+  el.innerHTML="";
+  const b=game.board();
+  const flip=!!opts.flip;
+  let kingSq=null;
+  if(!opts.mini&&game.in_check()){for(let r=0;r<8;r++)for(let f=0;f<8;f++){const q=b[r][f];if(q&&q.type==="k"&&q.color===game.turn())kingSq=FILES[f]+(8-r);}}
+  for(let rr=0;rr<8;rr++)for(let ff=0;ff<8;ff++){
+    const r=flip?7-rr:rr,f=flip?7-ff:ff;
+    const sqName=FILES[f]+(8-r);
+    const cell=document.createElement(opts.mini?"div":"button");
+    cell.className="sq "+((r+f)%2?"d":"l");
+    if(!opts.mini){cell.type="button";cell.dataset.sq=sqName;cell.setAttribute("aria-label",sqName);}
+    if(opts.last&&(opts.last.from===sqName||opts.last.to===sqName))cell.classList.add("last");
+    if(opts.sel===sqName)cell.classList.add("sel");
+    if(opts.hint===sqName||(opts.hint2&&opts.hint2===sqName))cell.classList.add("hint");
+    if(kingSq===sqName)cell.classList.add("chk");
+    if(opts.danger&&opts.danger.includes(sqName))cell.classList.add("danger");
+    if(opts.targets&&opts.targets.includes(sqName)){cell.classList.add("tgt");if(b[r][f])cell.classList.add("cap");}
+    const p=b[r][f];
+    if(p){const s=document.createElement("span");s.className="pc "+p.color;s.textContent=GLYPH[p.type];cell.appendChild(s);}
+    if(rr===7){const c=document.createElement("span");c.className="coord f";c.textContent=FILES[f];cell.appendChild(c);}
+    if(ff===0){const c=document.createElement("span");c.className="coord r";c.textContent=8-r;cell.appendChild(c);}
+    el.appendChild(cell);
+  }
+}
+function drawMinis(root){root.querySelectorAll(".board[data-fen]").forEach(el=>{const g=new Chess(el.dataset.fen);drawBoard(el,g,{mini:true});});}
+
+/* ---------- Lộ trình ---------- */
+function renderDays(){
+  const wrap=document.getElementById("days");wrap.innerHTML="";
+  DAYS.forEach((d,i)=>{
+    if(i===0||(d.ph||1)!==(DAYS[i-1].ph||1)){const h=document.createElement("h3");h.className="phase";h.textContent=(d.ph||1)===1?"Giai đoạn 1 · Cơ bản (ngày 1–12)":"Giai đoạn 2 · Nâng cao (ngày 13–"+DAYS.length+")";wrap.appendChild(h);}
+    const done=state.days.includes(i);
+    const el=document.createElement("div");el.className="day"+(done?" done":"");
+    el.innerHTML=`<div class="num">${i+1}</div><div class="body"><h3>${d.t}</h3><ul>${d.do.map(x=>"<li>"+x+"</li>").join("")}</ul><div class="links"></div></div>
+    <label class="chk"><input type="checkbox" id="day-${i}" ${done?"checked":""}> Xong</label>`;
+    const links=el.querySelector(".links");
+    if(d.L){const b=document.createElement("button");b.className="btn";b.textContent="Mở bài học";b.onclick=()=>{openLesson(d.L);show("learn")};links.appendChild(b);}
+    if(d.S){const b=document.createElement("button");b.className="btn";b.textContent=d.S==="review"?"Ôn bài sai":"Làm bài tập";b.onclick=()=>{openSet(d.S);show("train")};links.appendChild(b);}
+    if(d.O){const b=document.createElement("button");b.className="btn";b.textContent="Học khai cuộc";b.onclick=()=>go("open:"+d.O);links.appendChild(b);}
+    if(d.D){const b=document.createElement("button");b.className="btn";b.textContent="Luyện thế tàn cuộc";b.onclick=()=>go("play:"+d.D);links.appendChild(b);}
+    if(d.P){const b=document.createElement("button");b.className="btn";b.textContent="Đánh với máy";b.onclick=()=>show("play");links.appendChild(b);}
+    el.querySelector("input").onchange=e=>{
+      if(e.target.checked){if(!state.days.includes(i))state.days.push(i);}else state.days=state.days.filter(x=>x!==i);
+      save();el.classList.toggle("done",e.target.checked);
+      if(e.target.checked)renderCheer(state.days.length===DAYS.length?"Indo đã đi hết "+DAYS.length+" ngày và đã sẵn sàng rồi! Vào phòng thi cứ bình tĩnh, nghĩ kỹ từng nước như lúc tập nhé.":"Hoàn thành ngày "+(i+1)+"! Giỏi lắm Indo. Mai mình học tiếp ngày "+(Math.min(i+2,DAYS.length))+" nhé.");
+    };
+    wrap.appendChild(el);
+  });
+}
+
+/* ---------- Bài học ---------- */
+let curLesson="L1";
+function openLesson(id){
+  curLesson=id;const L=LESSONS.find(x=>x.id===id);
+  const body=document.getElementById("lessonBody");body.innerHTML=L.h;drawMinis(body);
+  document.querySelectorAll("#lessonList button").forEach(b=>b.setAttribute("aria-current",b.dataset.id===id));
+}
+function renderLessonList(){
+  const l=document.getElementById("lessonList");
+  [[1,"Cơ bản"],[2,"Nâng cao"]].forEach(([lv,label])=>{
+    const h=document.createElement("span");h.className="glabel";h.textContent=label;l.appendChild(h);
+    LESSONS.filter(L=>L.lv===lv).forEach(L=>{const b=document.createElement("button");b.textContent=L.t;b.dataset.id=L.id;b.onclick=()=>openLesson(L.id);l.appendChild(b);});
+  });
+}
+/* Nút "Thầy giao bài" trong bài học và lộ trình: set:…, open:…, play:… */
+function go(target){
+  const [k,v]=target.split(":");
+  if(k==="set"){openSet(v);show("train");}
+  else if(k==="open"){openOpening(v);show("open");}
+  else if(k==="play"){setDrill(v);show("play");}
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(b)go(b.dataset.go);});
+
+/* ---------- Luyện bài tập ---------- */
+let curSet=SETS[0],idx=0,game,sel=null,last=null,hintSq=null,phase=0,locked=false,node=null,pzFlip=false;
+const boardEl=document.getElementById("board"),fb=document.getElementById("feedback");
+function setFb(t,cls){fb.textContent=t;fb.className="feedback"+(cls?" "+cls:"");}
+function pid(){return curSet.items[idx].uid}
+let missedNow=false;
+function renderSets(){
+  const s=document.getElementById("sets");s.innerHTML="";
+  refreshReview();
+  SETS.forEach((S,i)=>{
+    if(i===0||!!S.adv!==!!SETS[i-1].adv){const h=document.createElement("span");h.className="glabel";h.textContent=S.adv?"Nâng cao":"Cơ bản";s.appendChild(h);}
+    const b=document.createElement("button");const n=S.items.filter(it=>state.solved[it.uid]).length;
+    b.textContent=`${S.name} · ${n}/${S.items.length}`;b.setAttribute("aria-pressed",S===curSet);b.onclick=()=>openSet(S.id);s.appendChild(b);});
+  const rb=document.createElement("button");rb.textContent=`${REVIEW.name} · ${REVIEW.items.length}`;rb.setAttribute("aria-pressed",curSet===REVIEW);rb.onclick=()=>openSet("review");s.appendChild(rb);
+}
+function renderDots(){
+  const d=document.getElementById("dots");d.innerHTML="";
+  curSet.items.forEach((it,i)=>{const b=document.createElement("button");b.textContent=i+1;b.setAttribute("aria-label","Bài "+(i+1));
+    if(state.solved[it.uid]&&!(curSet===REVIEW&&state.miss[it.uid]))b.classList.add("solved");if(i===idx)b.classList.add("cur");b.onclick=()=>loadPuzzle(i);d.appendChild(b);});
+}
+function openSet(id){
+  refreshReview();
+  curSet=id==="review"?{...REVIEW,items:REVIEW.items.slice()}:SETS.find(s=>s.id===id);
+  if(id==="review")curSet.id="review";
+  const empty=!curSet.items.length;
+  document.getElementById("reviewEmpty").hidden=!empty;
+  document.getElementById("trainer").hidden=empty;
+  if(empty){renderSets();return;}
+  loadPuzzle(0);
+}
+function loadPuzzle(i){
+  idx=i;const P=curSet.items[i];game=new Chess(P.fen);sel=null;last=null;hintSq=null;phase=0;locked=false;missedNow=false;node=P.tree||null;pzFlip=game.turn()==="b";
+  document.getElementById("ptitle").textContent=(curSet.id==="review"?P.cat+" · ":"")+`Bài ${i+1}: ${P.t}`;
+  document.getElementById("pdesc").textContent=P.d;
+  document.getElementById("turn").textContent=(game.turn()==="w"?"Indo cầm Trắng":"Indo cầm Đen")+(P.type==="mate2"?" · chiếu hết trong 2 nước":P.type==="mate1"?" · chiếu hết trong 1 nước":P.type==="tree"?(P.goal==="mate"?" · chiếu hết trong "+P.n+" nước":" · tìm đòn thắng quân"):"");
+  setFb(state.solved[pid()]?"Indo đã giải bài này rồi. Giải lại cho nhớ nhé.":"Bấm vào quân rồi bấm ô muốn đi.");
+  renderSets();renderDots();redraw();
+}
+function redraw(){
+  const targets=sel?game.moves({square:sel,verbose:true}).map(m=>m.to):null;
+  drawBoard(boardEl,game,{sel,last,hint:hintSq,targets,flip:pzFlip});
+}
+function solved(){
+  state.solved[pid()]=true;
+  const wasMissed=!!state.miss[pid()];
+  if(!missedNow)delete state.miss[pid()];
+  save();renderSets();renderDots();locked=true;
+  if(curSet.id!=="review"&&curSet.items.every(it=>state.solved[it.uid]))renderCheer("Indo đã giải hết bộ "+curSet.name+"! Một bước nữa tới ngày thi rồi.");
+  setFb(missedNow?"Đúng rồi, Indo không bỏ cuộc! Bài này vẫn nằm trong Ôn bài sai, lần sau giải đúng ngay từ đầu là xong.":wasMissed?"Chính xác ngay lần đầu! Indo đã chinh phục được bài từng sai.":pick(WIN_MSG)+" Bấm “Bài tiếp” để đi tiếp.","ok");
+}
+function wrong(msg){
+  missedNow=true;state.miss[pid()]=(state.miss[pid()]||0)+1;save();renderSets();
+  locked=true;setFb(msg||pick(TRY_MSG),"bad");
+  setTimeout(()=>{game.undo();last=null;locked=false;redraw();},900);
+}
+function tryMove(from,to){
+  const P=curSet.items[idx];
+  const m=game.move({from,to,promotion:"q"});
+  if(!m)return false;
+  last={from,to};hintSq=null;sel=null;redraw();
+  if(P.type==="mate1"){game.in_checkmate()?solved():wrong(game.in_stalemate()?"Ối, đây là hòa pat! Vua Đen hết nước nhưng không bị chiếu.":null);}
+  else if(P.type==="move"){P.ok.includes(m.san)?solved():wrong();}
+  else if(P.type==="tree"){
+    if(P.goal==="mate"&&game.in_checkmate()){solved();return true;}
+    if(node.f){(P.goal!=="mate"&&node.ok.includes(m.san))?solved():wrong(P.goal==="mate"?"Chưa phải chiếu hết. Thử nước khác.":null);return true;}
+    const br=node.m?node.m[m.san]:undefined;
+    if(br===undefined){wrong(P.goal==="mate"?"Nước này chưa ép được chiếu hết. Ưu tiên nước chiếu và thí quân!":null);return true;}
+    if(!br||!br.r){solved();return true;}
+    locked=true;setFb("Hay! Xem đối thủ đáp lại…");
+    setTimeout(()=>{const r=game.move(br.r);last={from:r.from,to:r.to};node=br.n;locked=false;redraw();
+      setFb(node&&node.f&&P.goal==="mate"?"Đối thủ đã đi "+viSan(r.san)+". Giờ chiếu hết!":"Đối thủ đã đi "+viSan(r.san)+". Tiếp tục nào!");},700);
+  }
+  else if(P.type==="mate2"){
+    if(phase===0){
+      const reply=P.keys[m.san];
+      if(!reply){wrong("Nước này chưa ép được chiếu hết trong 2 nước. Thử lại.");return true;}
+      locked=true;setFb("Hay! Xem Đen đáp lại…");
+      setTimeout(()=>{const r=game.move(reply);last={from:r.from,to:r.to};phase=1;locked=false;redraw();setFb("Đen đã đi. Giờ chiếu hết!");},700);
+    }else{game.in_checkmate()?solved():wrong("Chưa phải chiếu hết. Thử nước khác.");}
+  }
+  return true;
+}
+boardEl.addEventListener("click",e=>{
+  const c=e.target.closest(".sq");if(!c||locked)return;
+  const sq=c.dataset.sq,p=game.get(sq);
+  if(sel&&sel!==sq){if(tryMove(sel,sq))return;}
+  if(p&&p.color===game.turn()){sel=(sel===sq)?null:sq;}else sel=null;
+  redraw();
+});
+document.getElementById("btnHint").onclick=()=>{
+  const P=curSet.items[idx];
+  if(P.type==="tree"){const mm=(P.goal==="mate"&&node.f)?game.moves({verbose:true}).find(m=>{game.move(m);const ok=game.in_checkmate();game.undo();return ok}):(()=>{const t=new Chess(game.fen());return t.move(node.ok[0]);})();hintSq=mm?mm.from:null;}
+  else if(phase===1){const mm=game.moves({verbose:true}).find(m=>{game.move(m);const ok=game.in_checkmate();game.undo();return ok});hintSq=mm?mm.from:null;}
+  else hintSq=P.hint;
+  setFb("Quân được viền xanh là quân nên đi.");redraw();
+};
+document.getElementById("btnReset").onclick=()=>loadPuzzle(idx);
+document.getElementById("btnShow").onclick=()=>{
+  if(!state.solved[pid()]||curSet.id!=="review"){if(!missedNow){missedNow=true;state.miss[pid()]=(state.miss[pid()]||0)+1;save();renderSets();}}
+  setFb("Lời giải: "+solText(curSet.items[idx]));};
+function solText(P){
+  if(P.type!=="tree")return viSan(P.sol);
+  const out=[];let n=P.tree;
+  while(n){const k=n.ok[0];out.push(viSan(k));if(n.f||!n.m||!n.m[k]||!n.m[k].r)break;out.push("đối thủ "+viSan(n.m[k].r));n=n.m[k].n;}
+  return out.join(", ")+(P.goal==="mate"&&!out[out.length-1].includes("#")?" … rồi chiếu hết":"");
+}
+document.getElementById("btnNext").onclick=()=>{
+  if(idx+1<curSet.items.length)loadPuzzle(idx+1);
+  else if(curSet.id==="review")openSet("review");
+  else{const n=SETS.indexOf(curSet);openSet(SETS[(n+1)%SETS.length].id);}
+};
+function viSan(s){return s.replace(/\bK(?=[a-hx])/g,"V").replace(/\bQ(?=[a-hx])/g,"H").replace(/\bR(?=[a-hx])/g,"X").replace(/\bB(?=[a-hx])/g,"T").replace(/\bN(?=[a-hx])/g,"M").replace("=Q","=H");}
+
+/* ---------- Tiến độ ---------- */
+function renderProg(){
+  const g=document.getElementById("progGrid");
+  let html=`<div class="stat"><b>${state.days.length}/${DAYS.length}</b>ngày đã hoàn thành</div>`;
+  SETS.forEach(S=>{const n=S.items.filter(it=>state.solved[it.uid]).length;html+=`<div class="stat"><b>${n}/${S.items.length}</b>${S.name}</div>`;});
+  const nOp=OPENINGS.filter(o=>state.op&&state.op[o.id]).length,drills=DRILLS.filter(d=>d.goal),nDr=drills.filter(d=>state.drill&&state.drill[d.id]).length;
+  html+=`<div class="stat"><b>${nOp}/${OPENINGS.length}</b>khai cuộc đi đúng hết</div><div class="stat"><b>${nDr}/${drills.length}</b>thế tàn cuộc đã chinh phục</div>`;
+  g.innerHTML=html;
+  const agg={};ALL.forEach(it=>{const c=state.miss[it.uid];if(c){agg[it.t]=(agg[it.t]||0)+c;}});
+  const rows=Object.entries(agg).sort((a,b)=>b[1]-a[1]);
+  document.getElementById("mistakes").innerHTML=rows.length?rows.map(([k,v])=>`<div><span>${k}</span><b>${v} lần sai</b></div>`).join(""):'<p class="notes" style="margin:0">Chưa có dạng nào bị sai. Khi Indo làm sai, dạng bài đó sẽ hiện ở đây, xếp từ nhiều lần sai nhất.</p>';
+  resetBoxDefault();
+}
+function resetBoxDefault(){
+  const box=document.getElementById("resetBox");
+  box.innerHTML='<button class="btn" id="btnWipe">Xóa tiến độ, học lại từ đầu</button>';
+  document.getElementById("btnWipe").onclick=()=>{
+    box.innerHTML='<span>Chắc chắn xóa hết tiến độ?</span><button class="btn" id="wipeYes">Xóa</button><button class="btn" id="wipeNo">Thôi</button>';
+    document.getElementById("wipeYes").onclick=()=>{state={days:[],solved:{},miss:{},op:{},drill:{},visits:state.visits};save();renderDays();openSet("m1");renderOpList();renderControls();renderProg();};
+    document.getElementById("wipeNo").onclick=resetBoxDefault;
+  };
+}
+
+/* ---------- Máy chơi cờ (minimax + cắt tỉa alpha-beta) ---------- */
+const VAL={p:100,n:320,b:330,r:500,q:900,k:0};
+const CENTER=[0,1,2,3,3,2,1,0];
+function evalBoard(g){
+  const bd=g.board();let s=0,heavy=0;
+  for(const row of bd)for(const p of row)if(p&&p.type!=="p"&&p.type!=="k")heavy+=VAL[p.type];
+  const late=heavy<=1400; /* tàn cuộc: Vua nên ra giữa bàn */
+  for(let r=0;r<8;r++)for(let f=0;f<8;f++){const p=bd[r][f];if(!p)continue;
+    let v=VAL[p.type];
+    if(p.type==="n"||p.type==="b")v+=(CENTER[r]+CENTER[f])*5-((p.color==="w"?r===7:r===0)?15:0);
+    else if(p.type==="p")v+=(p.color==="w"?(6-r):(r-1))*(f>=2&&f<=5?8:3);
+    else if(p.type==="q")v+=(CENTER[r]+CENTER[f])*2;
+    else if(p.type==="k"&&late)v+=(CENTER[r]+CENTER[f])*10;
+    s+=p.color==="w"?v:-v;}
+  return g.turn()==="w"?s:-s;
+}
+function ordered(g,capturesOnly){
+  let ms=g.moves({verbose:true});
+  if(capturesOnly)ms=ms.filter(m=>m.captured||m.promotion);
+  for(const m of ms)m._o=(m.captured?VAL[m.captured]*10-VAL[m.piece]:0)+(m.promotion?8000:0)+(m.san.includes("+")?50:0);
+  return ms.sort((a,b)=>b._o-a._o);
+}
+let DEADLINE=Infinity;
+const TIMEUP={};
+function quiesce(g,alpha,beta,qd){
+  if(Date.now()>DEADLINE)throw TIMEUP;
+  const stand=evalBoard(g);
+  if(qd===0||stand>=beta)return stand>=beta?beta:stand;
+  if(stand>alpha)alpha=stand;
+  for(const m of ordered(g,true)){g.move(m);const sc=-quiesce(g,-beta,-alpha,qd-1);g.undo();
+    if(sc>=beta)return beta;if(sc>alpha)alpha=sc;}
+  return alpha;
+}
+function negamax(g,depth,alpha,beta,ply){
+  if(Date.now()>DEADLINE)throw TIMEUP;
+  const ms=ordered(g,false);
+  if(ms.length===0)return g.in_check()?-100000+ply:0;
+  if(depth===0)return quiesce(g,alpha,beta,2);
+  if(g.in_threefold_repetition()||g.insufficient_material())return 0;
+  for(const m of ms){g.move(m);const sc=-negamax(g,depth-1,-beta,-alpha,ply+1);g.undo();
+    if(sc>=beta)return beta;if(sc>alpha)alpha=sc;}
+  return alpha;
+}
+/* Tìm nước tốt nhất trong thời gian cho phép: nghĩ nông trước, còn giờ thì nghĩ sâu hơn */
+function bestMove(g,maxDepth,ms_budget,noise){
+  const root=ordered(g,false);if(!root.length)return null;
+  let best=root[0],bestScore=0;DEADLINE=Date.now()+ms_budget;
+  const startFen=g.fen();
+  for(let d=1;d<=maxDepth;d++){
+    let dBest=null,dSc=-Infinity;
+    try{
+      for(const m of root){g.move(m);let sc=-negamax(g,d-1,-Infinity,Infinity,1);g.undo();
+        if(noise)sc+=Math.random()*noise;
+        m._s=sc;if(sc>dSc){dSc=sc;dBest=m;}}
+    }catch(e){if(e!==TIMEUP)throw e;while(g.fen()!==startFen&&g.undo());break;}
+    best=dBest;bestScore=dSc;root.sort((a,b)=>b._s-a._s);
+    if(dSc>90000)break;
+  }
+  DEADLINE=Infinity;best._best=bestScore;return best;
+}
+const LEVELS=[
+  {name:"Tập sự",depth:1,time:800,random:0.35,noise:80},
+  {name:"Học sinh",depth:2,time:1500,random:0,noise:40},
+  {name:"Đội tuyển",depth:4,time:4000,random:0,noise:8}
+];
+function engineMove(g,lv){
+  const L=LEVELS[lv];const ms=g.moves({verbose:true});
+  if(Math.random()<L.random)return ms[Math.floor(Math.random()*ms.length)];
+  return bestMove(g,L.depth,L.time,L.noise);
+}
+
+/* ---------- Đánh với máy & luyện thế ---------- */
+const DRILLS=[
+ {id:"full",name:"Ván đầy đủ"},
+ {id:"kqk",name:"Hậu + Vua chiếu hết Vua",fen:"8/8/8/4k3/8/8/8/3QK3 w - - 0 1",goal:"mate",limit:15,tip:"Hậu đứng cách Vua Đen một nước Mã để thu hẹp chiếc hộp. Vua Đen ra mép bàn thì đưa Vua mình tới. Coi chừng hòa pat!"},
+ {id:"krrk",name:"Hai Xe cuốn chiếu",fen:"8/8/3k4/8/8/8/8/R3K2R w - - 0 1",goal:"mate",limit:10,tip:"Một Xe khóa một hàng, Xe kia chiếu ở hàng kế tiếp. Xe bị Vua đến gần thì chuyển sang cột xa."},
+ {id:"krk",name:"Xe + Vua chiếu hết Vua",fen:"8/8/8/8/8/2k5/8/K2R4 w - - 0 1",goal:"mate",limit:25,tip:"Xe cắt Vua Đen. Vua Trắng tiến lên đối mặt Vua Đen, rồi Xe chiếu. Khi không có nước chiếu tốt, Xe đi một nước chờ."},
+ {id:"kpk6",name:"Vua hàng 6 dẫn Tốt",fen:"4k3/8/4K3/4P3/8/8/8/8 w - - 0 1",goal:"promote",limit:12,tip:"Vua đi trước, Tốt theo sau. Vua Trắng giữ các ô d7, e7, f7 trước Tốt."},
+ {id:"kpk_opp",name:"Giành đối đầu",fen:"8/8/8/3k4/8/3K4/3P4/8 b - - 0 1",kid:"w",goal:"promote",limit:15,tip:"Máy đi trước. Mỗi khi Vua Đen nhường đường, Vua Trắng tiến lên. Đừng đẩy Tốt sớm, Vua mở đường trước."},
+ {id:"square",name:"Quy tắc hình vuông",fen:"8/8/8/7k/P7/8/8/K7 w - - 0 1",goal:"promote",limit:6,tip:"Vua Đen có vào được hình vuông của Tốt không? Nếu không, cứ chạy Tốt thẳng lên."},
+ {id:"breakthrough",name:"Đột phá ba Tốt",fen:"7k/ppp5/8/PPP5/8/8/8/7K w - - 0 1",goal:"promote",limit:8,tip:"Thí một Tốt để mở đường cho Tốt khác. Tốt giữa đi trước!"},
+ {id:"lucena",name:"Thế Lucena (đội tuyển)",fen:"1K1k4/1P6/8/8/8/8/r7/2R5 w - - 0 1",goal:"promote",limit:15,tip:"Chiếu đuổi Vua Đen ra xa, đưa Xe lên hàng 4, rồi cho Vua ra. Xe hàng 4 sẽ chặn chiếu làm cây cầu."}
+];
+const PKEY="covua-captoc-game-v2";
+let pg=new Chess(),pStart=null,pLevel=0,pColor="w",pSel=null,pLast=null,pHintFrom=null,pHintTo=null,pThinking=false,pDanger=false,pCoach=true,pDrill="full",pDone=false,pWait=false;
+function drill(){return DRILLS.find(d=>d.id===pDrill)||DRILLS[0];}
+try{const s=JSON.parse(localStorage.getItem(PKEY));if(s){pLevel=s.level||0;pColor=s.color||"w";pDanger=!!s.danger;pCoach=s.coach!==false;pDrill=s.drill||"full";pStart=s.start||null;
+  if(pStart&&pDrill==="custom")DRILLS.push({id:"custom",name:s.customName||"Từ khai cuộc",fen:pStart});
+  pg=new Chess(pStart||undefined);(s.moves||[]).forEach(m=>pg.move(m));}}catch(e){pg=new Chess();}
+function pSave(){try{const c=DRILLS.find(d=>d.id==="custom");localStorage.setItem(PKEY,JSON.stringify({level:pLevel,color:pColor,danger:pDanger,coach:pCoach,drill:pDrill,start:pStart,customName:c?c.name:null,moves:pg.history()}));}catch(e){}}
+const pBoard=document.getElementById("pboard"),pStatus=document.getElementById("pstatus");
+function seg(el,items,cur,onPick){el.innerHTML="";items.forEach(([v,label])=>{const b=document.createElement("button");b.textContent=label;b.setAttribute("aria-pressed",v===cur);b.onclick=()=>onPick(v);el.appendChild(b);});}
+function renderControls(){
+  seg(document.getElementById("lvSeg"),LEVELS.map((L,i)=>[i,L.name]),pLevel,v=>{pLevel=v;pSave();renderControls();});
+  const d=drill();
+  document.getElementById("colField").hidden=d.id!=="full";
+  seg(document.getElementById("colSeg"),[["w","Trắng (đi trước)"],["b","Đen"]],pColor,v=>{if(v!==pColor){pColor=v;newGame();}});
+  const sel=document.getElementById("startSel");sel.innerHTML="";
+  DRILLS.forEach(x=>{const o=document.createElement("option");o.value=x.id;o.textContent=(x.goal&&state.drill&&state.drill[x.id]?"✓ ":"")+x.name;sel.appendChild(o);});
+  sel.value=pDrill;
+  document.getElementById("dangerT").checked=pDanger;
+  document.getElementById("coachT").checked=pCoach;
+  const g=document.getElementById("drillGoal");
+  if(d.goal){g.hidden=false;g.innerHTML=`<b>Nhiệm vụ:</b> ${d.goal==="mate"?"chiếu hết":"phong cấp Tốt thành Hậu"} trong <b>${d.limit}</b> nước. <span class="notes">${d.tip}</span>`;}
+  else g.hidden=true;
+}
+document.getElementById("startSel").onchange=e=>setDrill(e.target.value);
+document.getElementById("dangerT").onchange=e=>{pDanger=e.target.checked;pSave();pRedraw();};
+document.getElementById("coachT").onchange=e=>{pCoach=e.target.checked;pSave();};
+function setDrill(id,opts){
+  pDrill=id;const d=drill();
+  pStart=d.fen||null;
+  if(d.fen){const t=new Chess(d.fen);pColor=d.kid||opts&&opts.kid||t.turn();}
+  newGame();
+}
+/* Quân bị treo: bị đối phương tấn công mà không có quân nhà bảo vệ */
+function attackedBy(fen,sq,byColor){
+  const parts=fen.split(" ");parts[1]=byColor;parts[3]="-";
+  const g=new Chess();if(!g.load(parts.join(" ")))return false;
+  return g.moves({verbose:true}).some(m=>m.to===sq);
+}
+function hangingSquares(g,color){
+  const out=[],bd=g.board(),opp=color==="w"?"b":"w";
+  for(let r=0;r<8;r++)for(let f=0;f<8;f++){const p=bd[r][f];if(!p||p.color!==color||p.type==="k")continue;
+    const sq=FILES[f]+(8-r);
+    if(!attackedBy(g.fen(),sq,opp))continue;
+    const t=new Chess(g.fen());t.remove(sq);t.put({type:"p",color:opp},sq);
+    if(!attackedBy(t.fen(),sq,color))out.push(sq);}
+  return out;
+}
+function material(g){const c={w:0,b:0},pts={p:1,n:3,b:3,r:5,q:9,k:0};g.board().forEach(row=>row.forEach(p=>{if(p)c[p.color]+=pts[p.type];}));return c;}
+function kidMoves(){return pg.history({verbose:true}).filter(m=>m.color===pColor);}
+/* Kiểm tra nhiệm vụ luyện thế: trả về "ok", "fail:lý do" hoặc null (đang làm) */
+function drillResult(){
+  const d=drill();if(!d.goal)return null;
+  const km=kidMoves();
+  if(pg.in_checkmate())return pg.turn()!==pColor?"ok":"fail:Indo bị chiếu hết.";
+  if(d.goal==="promote"&&km.some(m=>m.promotion))return "ok";
+  if(pg.in_draw()||pg.in_stalemate())return "fail:Ván cờ thành hòa"+(pg.in_stalemate()?" pat":"")+".";
+  if(d.goal==="promote"&&!pg.board().some(r=>r.some(p=>p&&p.type==="p"&&p.color===pColor)))return "fail:Tốt của Indo đã bị ăn.";
+  if(km.length>=d.limit&&pg.turn()!==pColor)return "fail:Đã hết "+d.limit+" nước mà chưa xong.";
+  return null;
+}
+function pRedraw(){
+  const targets=pSel?pg.moves({square:pSel,verbose:true}).map(m=>m.to):null;
+  const danger=pDanger&&!pThinking?hangingSquares(pg,pColor):null;
+  drawBoard(pBoard,pg,{flip:pColor==="b",sel:pSel,last:pLast,targets,hint:pHintFrom,hint2:pHintTo,danger});
+  const m=material(pg);const me=pColor==="w"?m.w:m.b,ai=pColor==="w"?m.b:m.w;
+  const d=drill();
+  document.getElementById("matW").textContent=d.goal?"Nước đã đi: "+kidMoves().length+"/"+d.limit:"Quân của Indo: "+me+" điểm";
+  document.getElementById("matB").textContent=d.goal?"":"Quân của máy: "+ai+" điểm";
+  const h=pg.history(),startBlack=(new Chess(pStart||undefined)).turn()==="b";let html="",n=startBlack?1:0,num=1;
+  const seq=startBlack?[null,...h]:h;
+  for(let i=0;i<seq.length;i+=2){html+=`<span>${num}. ${seq[i]?viSan(seq[i]):"…"}${seq[i+1]?" "+viSan(seq[i+1]):""}</span>`;num++;}
+  const ml=document.getElementById("pMoves");ml.innerHTML=html||'<span class="notes">Chưa có nước nào.</span>';ml.scrollTop=ml.scrollHeight;
+  if(!pWait)pStatusText();
+}
+function pStatusText(){
+  let t,cls="";
+  const dr=drillResult();
+  if(dr==="ok"){t="Hoàn thành nhiệm vụ! Thầy khen Indo: kỹ thuật tàn cuộc rất chuẩn.";cls="ok";}
+  else if(dr){t="Chưa đạt: "+dr.slice(5)+" Bấm Ván mới để thử lại, hoặc Đi lại vài nước.";cls="bad";}
+  else if(pg.in_checkmate()){const kidWon=pg.turn()!==pColor;t=kidWon?"Chiếu hết! Indo thắng rồi, giỏi quá! Thử mức khó hơn nhé.":"Máy thắng ván này. Không sao Indo ơi, bấm Đi lại để xem mình sai ở đâu, ván sau sẽ khác.";cls=kidWon?"ok":"bad";}
+  else if(pg.in_stalemate()){t="Hòa pat: bên đến lượt không bị chiếu nhưng hết nước đi.";}
+  else if(pg.insufficient_material()){t="Hòa: hai bên không còn đủ quân để chiếu hết.";}
+  else if(pg.in_threefold_repetition()){t="Hòa: thế cờ lặp lại 3 lần.";}
+  else if(pg.in_draw()){t="Hòa: 50 nước không ăn quân, không đi Tốt.";}
+  else if(pThinking)t="Máy đang nghĩ…";
+  else if(pg.turn()===pColor)t=pg.in_check()?"Indo đang bị chiếu! Chạy, chặn hay ăn?":"Đến lượt Indo.";
+  else t="Máy sắp đi…";
+  pStatus.innerHTML="";pStatus.textContent=t;pStatus.className="feedback"+(cls?" "+cls:"");
+}
+function finished(){return pg.game_over()||!!drillResult();}
+function noteDrill(){
+  const d=drill();
+  if(d.goal&&drillResult()==="ok"&&!(state.drill&&state.drill[d.id])){
+    state.drill=state.drill||{};state.drill[d.id]=true;save();renderControls();
+    renderCheer("Indo đã chinh phục thế "+d.name+"! Kỹ thuật này sẽ giúp Indo thắng những ván người khác chỉ hòa.");
+  }
+}
+function aiTurn(){
+  if(pThinking||finished()||pg.turn()===pColor)return;
+  pThinking=true;pRedraw();const token=pg;
+  setTimeout(()=>{
+    if(token!==pg){return;}
+    const m=engineMove(new Chess(pg.fen()),drill().goal?2:pLevel);
+    if(token!==pg){return;}
+    if(m){const r=pg.move({from:m.from,to:m.to,promotion:m.promotion||"q"});pLast={from:r.from,to:r.to};}
+    pThinking=false;pSave();pRedraw();noteDrill();
+  },60);
+}
+function newGame(){pg=new Chess(pStart||undefined);pThinking=false;pWait=false;pSel=null;pLast=null;pHintFrom=pHintTo=null;pSave();renderControls();pRedraw();aiTurn();}
+/* Thầy nhắc: so sánh thế cờ trước và sau nước của Indo. Mất nhiều hơn ~2 điểm thì nhắc. */
+const PIECE_VI={p:"Tốt",n:"Mã",b:"Tượng",r:"Xe",q:"Hậu",k:"Vua"};
+function searchScore(fen,ms){const g=new Chess(fen);if(g.game_over())return {m:null,s:g.in_checkmate()?-100000:0};const m=bestMove(g,2,ms,0);return {m,s:m?m._best:0};}
+function coachCheck(beforeFen){
+  const before=searchScore(beforeFen,450);
+  const after=searchScore(pg.fen(),450);
+  const lost=before.s+after.s;
+  if(lost<180||-after.s>700)return null;
+  const om=after.m;let txt;
+  if(after.s>=90000)txt="Cẩn thận! Sau nước này, máy có đòn chiếu hết Indo.";
+  else if(om&&om.captured)txt=`Nước vừa rồi để máy ăn ${PIECE_VI[om.captured]} ở ô ${om.to}.`;
+  else if(om)txt=`Nước vừa rồi cho máy một đòn mạnh: ${viSan(om.san)}.`;
+  else return null;
+  return txt;
+}
+function showCoachWarn(txt){
+  pWait=true;
+  pStatus.className="feedback coachbox";
+  pStatus.innerHTML="";
+  const p=document.createElement("p");p.style.margin="0 0 8px";p.innerHTML="<b>Thầy nhắc:</b> "+txt+" Hỏi lại ba câu an toàn nhé.";
+  const row=document.createElement("div");row.className="row";
+  const b1=document.createElement("button");b1.className="btn primary";b1.textContent="Đi lại nước này";
+  const b2=document.createElement("button");b2.className="btn";b2.textContent="Vẫn đi";
+  b1.onclick=()=>{pWait=false;pg.undo();const h=pg.history({verbose:true});const l=h[h.length-1];pLast=l?{from:l.from,to:l.to}:null;pSave();pRedraw();};
+  b2.onclick=()=>{pWait=false;pRedraw();aiTurn();};
+  row.append(b1,b2);pStatus.append(p,row);
+}
+pBoard.addEventListener("click",e=>{
+  const c=e.target.closest(".sq");if(!c||pThinking||pWait||finished()||pg.turn()!==pColor)return;
+  const sq=c.dataset.sq,p=pg.get(sq);
+  if(pSel&&pSel!==sq){const before=pg.fen();const r=pg.move({from:pSel,to:sq,promotion:"q"});
+    if(r){pLast={from:r.from,to:r.to};pSel=null;pHintFrom=pHintTo=null;pSave();pRedraw();noteDrill();
+      if(pCoach&&!drill().goal&&!finished()){
+        pThinking=true;pStatus.textContent="Thầy đang xem nước đi…";
+        setTimeout(()=>{const w=coachCheck(before);pThinking=false;if(w){pRedraw();showCoachWarn(w);}else aiTurn();},40);
+      }else aiTurn();
+      return;}}
+  pSel=(p&&p.color===pColor&&pSel!==sq)?sq:null;pRedraw();
+});
+document.getElementById("pNew").onclick=newGame;
+document.getElementById("pUndo").onclick=()=>{
+  if(pThinking)return;
+  if(!pg.history().length)return;
+  pWait=false;
+  pg.undo();if(pg.turn()!==pColor&&pg.history().length)pg.undo();
+  const h=pg.history({verbose:true});const l=h[h.length-1];pLast=l?{from:l.from,to:l.to}:null;pSel=null;pHintFrom=pHintTo=null;pSave();pRedraw();aiTurn();
+};
+document.getElementById("pHint").onclick=()=>{
+  if(pThinking||pWait||finished()||pg.turn()!==pColor)return;
+  pStatus.textContent="Thầy đang tìm nước hay…";
+  setTimeout(()=>{const m=bestMove(new Chess(pg.fen()),3,1500,0);if(m){pHintFrom=m.from;pHintTo=m.to;}pRedraw();pStatus.textContent="Thầy gợi ý: đi quân ở ô viền xanh tới ô viền xanh còn lại. Thử nghĩ xem vì sao.";},60);
+};
+/* Mở bàn đánh với máy từ một thế cờ bất kỳ (dùng sau khi học khai cuộc) */
+function playFrom(fen,kid,name){
+  const i=DRILLS.findIndex(d=>d.id==="custom");if(i>=0)DRILLS.splice(i,1);
+  DRILLS.push({id:"custom",name:name||"Từ khai cuộc",fen});
+  pDrill="custom";pStart=fen;pColor=kid;newGame();show("play");
+}
+
+/* ---------- Khai cuộc: thầy hướng dẫn từng nước ---------- */
+let op=null,opG=null,opI=0,opSel=null,opLast=null,opLock=false,opHint=null,opHint2=null,opMiss=0;
+const oBoard=document.getElementById("oboard"),oCoach=document.getElementById("oCoach");
+function coachSay(html,cls){oCoach.className="feedback coachbox"+(cls?" "+cls:"");oCoach.innerHTML=html;}
+function renderOpList(){
+  const el=document.getElementById("opList");el.innerHTML="";
+  const groups=[["w","Cầm Trắng"],["b","Cầm Đen"],["trap","Bẫy khai cuộc"]];
+  groups.forEach(([g,label])=>{
+    const items=OPENINGS.filter(o=>g==="trap"?o.lv==="Bẫy":(o.side===g&&o.lv!=="Bẫy"));
+    const wrap=document.createElement("div");wrap.className="opgroup";
+    const h=document.createElement("span");h.className="glabel";h.textContent=label;wrap.appendChild(h);
+    items.forEach(o=>{const b=document.createElement("button");b.textContent=(state.op&&state.op[o.id]?"✓ ":"")+(g==="trap"?o.name:o.name.replace(/ \((Đen|Trắng)\)$/,""));
+      b.setAttribute("aria-pressed",op===o);b.onclick=()=>openOpening(o.id);wrap.appendChild(b);});
+    el.appendChild(wrap);
+  });
+}
+function openOpening(id){
+  op=OPENINGS.find(o=>o.id===id)||OPENINGS[0];opG=new Chess();opI=0;opSel=null;opLast=null;opLock=false;opHint=opHint2=null;opMiss=0;
+  document.getElementById("oName").textContent=op.name;
+  document.getElementById("oSide").textContent="Indo cầm "+(op.side==="w"?"Trắng":"Đen")+" · "+op.lv;
+  document.getElementById("oIntro").textContent=op.intro;
+  coachSay("<b>Thầy:</b> "+(op.side==="w"?"Indo đi trước. Thầy sẽ đi quân Đen và giảng từng nước.":"Thầy đi quân Trắng trước, Indo đáp lại bằng quân Đen."));
+  renderOpList();opRedraw();opAuto();
+}
+function opRedraw(){
+  const targets=opSel?opG.moves({square:opSel,verbose:true}).map(m=>m.to):null;
+  drawBoard(oBoard,opG,{flip:op.side==="b",sel:opSel,last:opLast,targets,hint:opHint,hint2:opHint2});
+  const h=opG.history();let html="";for(let i=0;i<h.length;i+=2)html+=`<span>${i/2+1}. ${viSan(h[i])}${h[i+1]?" "+viSan(h[i+1]):""}</span>`;
+  const ml=document.getElementById("oMoves");ml.innerHTML=html||'<span class="notes">Chưa có nước nào.</span>';ml.scrollTop=ml.scrollHeight;
+  document.getElementById("oStep").textContent="Nước "+Math.min(opI,op.m.length)+"/"+op.m.length;
+}
+function opComment(i,who){
+  const [san,c]=op.m[i];
+  return `<b>${who} ${viSan(san)}.</b> `+(c||"");
+}
+function opAuto(){
+  if(opI>=op.m.length){opFinish();return;}
+  if(opG.turn()===op.side)return;
+  opLock=true;
+  setTimeout(()=>{
+    const r=opG.move(op.m[opI][0]);opLast={from:r.from,to:r.to};
+    coachSay(opComment(opI,"Thầy đi")+(opI+1<op.m.length?"<br><span class=\"notes\">Đến lượt Indo.</span>":""));
+    opI++;opLock=false;opRedraw();
+    if(opI>=op.m.length)opFinish();
+  },650);
+}
+function opFinish(){
+  const first=!(state.op&&state.op[op.id]);
+  state.op=state.op||{};
+  if(opMiss===0)state.op[op.id]=true;
+  save();renderOpList();
+  coachSay(`<b>Thầy:</b> ${opMiss===0?"Xuất sắc! Indo đi đúng hết, không sai nước nào.":"Indo đã đi hết thế cờ, sai "+opMiss+" lần. Làm lại cho đến khi không sai nước nào nhé."} Giờ thử đánh tiếp với máy từ thế này xem Indo có giữ được thế tốt không.`,opMiss===0?"ok":"");
+  if(opMiss===0&&first)renderCheer("Indo đã thuộc "+op.name+"! Thêm một vũ khí cho ngày thi.");
+}
+oBoard.addEventListener("click",e=>{
+  const c=e.target.closest(".sq");if(!c||opLock||!op||opI>=op.m.length||opG.turn()!==op.side)return;
+  const sq=c.dataset.sq,p=opG.get(sq);
+  if(opSel&&opSel!==sq){
+    const r=opG.move({from:opSel,to:sq,promotion:"q"});
+    if(r){
+      opSel=null;opHint=opHint2=null;
+      if(r.san===op.m[opI][0]){
+        opLast={from:r.from,to:r.to};coachSay(opComment(opI,"Đúng rồi!"),"ok");opI++;opRedraw();opAuto();
+      }else{
+        opG.undo();opMiss++;opRedraw();
+        const t=new Chess(opG.fen()).move(op.m[opI][0]);
+        coachSay(`<b>Thầy:</b> ${viSan(r.san)} không hẳn là sai, nhưng trong khai cuộc này thầy muốn Indo đi ${t.piece===r.piece?"một quân "+PIECE_VI[t.piece]+" khác":"quân "+PIECE_VI[t.piece]}. Thử lại nhé, hoặc bấm Gợi ý.`,"bad");
+      }
+      return;
+    }
+  }
+  opSel=(p&&p.color===op.side&&opSel!==sq)?sq:null;opRedraw();
+});
+document.getElementById("oHint").onclick=()=>{
+  if(!op||opI>=op.m.length||opG.turn()!==op.side)return;
+  const t=new Chess(opG.fen()).move(op.m[opI][0]);opHint=t.from;opHint2=t.to;opMiss++;
+  coachSay(`<b>Thầy gợi ý:</b> đi ${viSan(t.san)}. ${op.m[opI][1]||""}`);opRedraw();
+};
+document.getElementById("oReset").onclick=()=>op&&openOpening(op.id);
+document.getElementById("oPlay").onclick=()=>{if(op)playFrom(opG.fen(),op.side,"Từ "+op.name);};
+
+/* ---------- Khởi động ---------- */
+if(typeof Chess==="undefined"){fb.textContent="Không tải được bộ luật cờ. Kiểm tra mạng rồi mở lại trang.";}
+else{renderCheer();renderDays();renderLessonList();openLesson("L1");loadPuzzle(0);updateMeter();renderOpList();openOpening("italian");renderControls();pRedraw();aiTurn();}
+</script>
+</body>
+</html>
