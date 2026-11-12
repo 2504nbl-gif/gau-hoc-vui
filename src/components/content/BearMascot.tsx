@@ -1,7 +1,7 @@
 /** Linh vật gấu của app (vẽ riêng, không dùng nhân vật có bản quyền). */
-export function BearMascot({ className = '' }: { className?: string }) {
+export function BearMascot({ className = '', ...box }: { className?: string; x?: number; y?: number; width?: number; height?: number }) {
   return (
-    <svg viewBox="0 0 120 120" className={className} aria-hidden>
+    <svg viewBox="0 0 120 120" className={className} aria-hidden {...box}>
       <circle cx="27" cy="30" r="18" fill="#a8693f" />
       <circle cx="93" cy="30" r="18" fill="#a8693f" />
       <circle cx="27" cy="30" r="9" fill="#ebb88d" />

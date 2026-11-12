@@ -27,6 +27,11 @@ import { CupShuffle } from './focus/CupShuffle';
 import { Curtain } from './focus/Curtain';
 import { HammerNails } from './focus/HammerNails';
 import { BlowBalloon, BlowBoat, BlowBubbles, BlowPinwheel } from './blow/scenes';
+// Nhóm trò 3 tuổi — Toán sớm, Ngôn ngữ, Cảm xúc
+import { ShareTreats } from './early/ShareTreats';
+import { BalanceScale } from './early/BalanceScale';
+import { CountTouch } from './early/CountTouch';
+import { HowFeel, Opposites, WhereBear } from './early/choiceGames';
 
 export interface GameProps { onExit: () => void; arg?: string }
 
@@ -68,6 +73,13 @@ const RENDERS: Record<string, (p: GameProps) => ReactNode> = {
   'blow-balloon': (p) => <BlowBalloon {...p} />,
   'blow-bubbles': (p) => <BlowBubbles {...p} />,
   'blow-boat': (p) => <BlowBoat {...p} />,
+  // Nhóm trò 3 tuổi — Toán sớm, Ngôn ngữ, Cảm xúc (features/early)
+  'share-treats': (p) => <ShareTreats {...p} />,
+  'balance-scale': (p) => <BalanceScale {...p} />,
+  'count-touch': (p) => <CountTouch {...p} />,
+  'where-bear': (p) => <WhereBear {...p} />,
+  'opposites': (p) => <Opposites {...p} />,
+  'how-feel': (p) => <HowFeel {...p} />,
 };
 
 export const GAMES: GameEntry[] = GAME_META.map((m) => ({ ...m, render: RENDERS[m.id] }));

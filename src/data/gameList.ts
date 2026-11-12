@@ -61,4 +61,11 @@ export const GAME_META: GameMeta[] = [
   { id: 'flower-pot', module: 'math', title: 'Chọn chậu hoa', icon: '🌷', note: 'Chậu có đúng số bông hoa', color: 'leaf' },
   { id: 'compare', module: 'math', title: 'So sánh', icon: '⚖️', note: 'Kéo dấu lớn, bé, bằng', color: 'grape' },
   { id: 'big-small', module: 'math', title: 'To và nhỏ', icon: '🐘', note: 'Con to về nhà to, con nhỏ về nhà nhỏ', color: 'sun' },
+  // Nhóm trò 3 tuổi — Toán sớm, Ngôn ngữ, Cảm xúc (features/early)
+  { id: 'share-treats', module: 'math', title: 'Chia kẹo cho bạn', icon: '🍭', note: 'Mỗi bạn một cái, đặt và đếm', color: 'peach' },
+  { id: 'balance-scale', module: 'math', title: 'Cân thăng bằng', icon: '🐭', note: 'Bên nào nặng hơn, nhẹ hơn?', color: 'grape' },
+  { id: 'count-touch', module: 'math', title: 'Đếm và chọn số', icon: '🐞', note: 'Chạm từng bạn để đếm, rồi chọn số', color: 'sea' },
+  { id: 'where-bear', module: 'language-games', title: 'Ở đâu thế?', icon: '🧸', note: 'Trên, dưới, trong, cạnh', color: 'leaf' },
+  { id: 'opposites', module: 'language-games', title: 'Trái ngược', icon: '🌙', note: 'To – nhỏ, nóng – lạnh, ngày – đêm', color: 'berry' },
+  { id: 'how-feel', module: 'language-games', title: 'Bạn thấy thế nào?', icon: '😀', note: 'Vui, buồn, sợ, giận, ngạc nhiên', color: 'sun' },
 ];

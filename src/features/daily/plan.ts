@@ -17,6 +17,9 @@ const THINK_GAMES = ['shadow-match', 'hidden-count', 'sequence', 'color-tower', 
   'sock-pair', 'cup-shuffle', 'curtain', 'hammer-nails'];
 /** Toán, nhạc, vẽ. */
 const SKILL_GAMES = ['egg-count', 'flower-pot', 'trace-shapes', 'piano-drag', 'sound-quiz', 'big-small'];
+// Nhóm trò 3 tuổi (features/early): ngôn ngữ + cảm xúc vào chặng tư duy, toán sớm vào chặng kỹ năng.
+THINK_GAMES.push('where-bear', 'opposites', 'how-feel');
+SKILL_GAMES.push('share-treats', 'balance-scale', 'count-touch');
 
 /** Ngày theo giờ máy, dạng 2026-11-04. */
 export function dayKey(d = new Date()): string {
