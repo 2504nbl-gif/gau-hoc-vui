@@ -61,4 +61,11 @@ export const GAME_META: GameMeta[] = [
   { id: 'flower-pot', module: 'math', title: 'Chọn chậu hoa', icon: '🌷', note: 'Chậu có đúng số bông hoa', color: 'leaf' },
   { id: 'compare', module: 'math', title: 'So sánh', icon: '⚖️', note: 'Kéo dấu lớn, bé, bằng', color: 'grape' },
   { id: 'big-small', module: 'math', title: 'To và nhỏ', icon: '🐘', note: 'Con to về nhà to, con nhỏ về nhà nhỏ', color: 'sun' },
+  // Phát triển tư duy cho bé 3 tuổi (features/logic)
+  { id: 'odd-one-out', module: 'observation', title: 'Tìm bạn khác loại', icon: '🔍', note: 'Bạn nào khác các bạn còn lại?', color: 'teal' },
+  { id: 'pattern-next', module: 'observation', title: 'Hình gì tiếp theo?', icon: '🪆', note: 'Đỏ, xanh, đỏ, xanh… rồi đến gì?', color: 'grape' },
+  { id: 'jigsaw', module: 'observation', title: 'Xếp hình 4 mảnh', icon: '🧩', note: 'Kéo mảnh ghép vào đúng chỗ', color: 'sun' },
+  { id: 'maze', module: 'fine-motor', title: 'Mê cung', icon: '🍯', note: 'Đưa gấu đi tới hũ mật ong', color: 'leaf' },
+  { id: 'whats-missing', module: 'memory', title: 'Thiếu bạn nào?', icon: '👀', note: 'Nhìn kỹ, bạn nào trốn mất?', color: 'coral' },
+  { id: 'story-order', module: 'language-games', title: 'Chuyện gì trước, chuyện gì sau?', icon: '🌻', note: 'Xếp 3 tranh theo thứ tự 1-2-3', color: 'leaf' },
 ];

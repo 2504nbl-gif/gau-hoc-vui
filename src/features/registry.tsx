@@ -27,6 +27,11 @@ import { CupShuffle } from './focus/CupShuffle';
 import { Curtain } from './focus/Curtain';
 import { HammerNails } from './focus/HammerNails';
 import { BlowBalloon, BlowBoat, BlowBubbles, BlowPinwheel } from './blow/scenes';
+import { OddOneOut, PatternNext } from './logic/choiceGames';
+import { Jigsaw } from './logic/Jigsaw';
+import { MazeGame } from './logic/MazeGame';
+import { WhatsMissing } from './logic/WhatsMissing';
+import { StoryOrder } from './logic/StoryOrder';
 
 export interface GameProps { onExit: () => void; arg?: string }
 
@@ -68,6 +73,13 @@ const RENDERS: Record<string, (p: GameProps) => ReactNode> = {
   'blow-balloon': (p) => <BlowBalloon {...p} />,
   'blow-bubbles': (p) => <BlowBubbles {...p} />,
   'blow-boat': (p) => <BlowBoat {...p} />,
+  // Phát triển tư duy (features/logic)
+  'odd-one-out': (p) => <OddOneOut {...p} />,
+  'pattern-next': (p) => <PatternNext {...p} />,
+  'jigsaw': (p) => <Jigsaw {...p} />,
+  'maze': (p) => <MazeGame {...p} />,
+  'whats-missing': (p) => <WhatsMissing {...p} />,
+  'story-order': (p) => <StoryOrder {...p} />,
 };
 
 export const GAMES: GameEntry[] = GAME_META.map((m) => ({ ...m, render: RENDERS[m.id] }));
