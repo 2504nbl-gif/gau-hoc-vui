@@ -14,7 +14,9 @@ export interface PlanStep { kind: StepKind; ref: string }
 
 /** Trò tư duy (quan sát, ghi nhớ, vận động tinh) hợp với bé nhỏ. */
 const THINK_GAMES = ['shadow-match', 'hidden-count', 'sequence', 'color-tower', 'rotate-grid', 'memory-2x2', 'dress-up', 'thread-needle', 'color-sort', 'mom-baby',
-  'sock-pair', 'cup-shuffle', 'curtain', 'hammer-nails'];
+  'sock-pair', 'cup-shuffle', 'curtain', 'hammer-nails',
+  // Phát triển tư duy (features/logic)
+  'odd-one-out', 'pattern-next', 'jigsaw', 'maze', 'whats-missing', 'story-order'];
 /** Toán, nhạc, vẽ. */
 const SKILL_GAMES = ['egg-count', 'flower-pot', 'trace-shapes', 'piano-drag', 'sound-quiz', 'big-small'];
 // Thực hành cuộc sống + Giác quan (Montessori, bé 3 tuổi)

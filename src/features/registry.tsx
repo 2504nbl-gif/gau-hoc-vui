@@ -34,6 +34,11 @@ import { TidyUp } from './practical/TidyUp';
 import { HalfMatch } from './practical/HalfMatch';
 import { Fasten } from './practical/Fasten';
 import { WaterPlants } from './practical/WaterPlants';
+import { OddOneOut, PatternNext } from './logic/choiceGames';
+import { Jigsaw } from './logic/Jigsaw';
+import { MazeGame } from './logic/MazeGame';
+import { WhatsMissing } from './logic/WhatsMissing';
+import { StoryOrder } from './logic/StoryOrder';
 
 export interface GameProps { onExit: () => void; arg?: string }
 
@@ -82,6 +87,13 @@ const RENDERS: Record<string, (p: GameProps) => ReactNode> = {
   'half-match': (p) => <HalfMatch {...p} />,
   'fasten': (p) => <Fasten {...p} />,
   'water-plants': (p) => <WaterPlants {...p} />,
+  // Phát triển tư duy (features/logic)
+  'odd-one-out': (p) => <OddOneOut {...p} />,
+  'pattern-next': (p) => <PatternNext {...p} />,
+  'jigsaw': (p) => <Jigsaw {...p} />,
+  'maze': (p) => <MazeGame {...p} />,
+  'whats-missing': (p) => <WhatsMissing {...p} />,
+  'story-order': (p) => <StoryOrder {...p} />,
 };
 
 export const GAMES: GameEntry[] = GAME_META.map((m) => ({ ...m, render: RENDERS[m.id] }));

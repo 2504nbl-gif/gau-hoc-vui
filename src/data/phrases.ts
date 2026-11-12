@@ -5,6 +5,7 @@
 
 import { MONTESSORI_NAMES } from './montessori';
 import { PRACTICAL_NAMES } from './practical';
+import { LOGIC_NAMES } from './logic';
 
 export const DEFAULT_CHILD = 'Gấu';
 
@@ -144,6 +145,16 @@ export const PHRASES = {
   waterHint: 'Bé kéo bình tưới tới chậu cây, giữ yên để tưới nhé!',
   waterEnough: 'Cây đủ nước rồi, mình tưới cây khác nhé!',
   practicalNames: PRACTICAL_NAMES,
+  // Phát triển tư duy (features/logic): Tìm bạn khác loại, Hình gì tiếp theo?, Xếp hình 4 mảnh, Mê cung, Thiếu bạn nào?, Chuyện gì trước chuyện gì sau?
+  oddHint: 'Bạn nào khác với các bạn còn lại nhỉ?',
+  patternNext: 'Tiếp theo là hình gì nhỉ?',
+  jigsawHint: 'Bé kéo từng mảnh vào đúng chỗ để ghép tranh nhé!',
+  mazeHint: 'Bé kéo chú gấu đi theo đường, tới hũ mật ong nhé!',
+  mazeDone: 'Gấu tìm được mật ong rồi!',
+  missLook: 'Bé nhìn thật kỹ các bạn nhé!',
+  missAsk: 'Bạn nào trốn mất rồi nhỉ?',
+  orderHint: 'Chuyện gì trước, chuyện gì sau? Bé xếp tranh theo thứ tự nhé!',
+  logicNames: LOGIC_NAMES,
 } as const;
 
 /** Tên các trò chơi (đọc khi bé chạm vào). Được điền thêm từ danh sách trò chơi. */
