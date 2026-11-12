@@ -27,6 +27,13 @@ import { CupShuffle } from './focus/CupShuffle';
 import { Curtain } from './focus/Curtain';
 import { HammerNails } from './focus/HammerNails';
 import { BlowBalloon, BlowBoat, BlowBubbles, BlowPinwheel } from './blow/scenes';
+// Thực hành cuộc sống + Giác quan (Montessori)
+import { PourWater } from './practical/PourWater';
+import { SizeOrder } from './practical/SizeOrder';
+import { TidyUp } from './practical/TidyUp';
+import { HalfMatch } from './practical/HalfMatch';
+import { Fasten } from './practical/Fasten';
+import { WaterPlants } from './practical/WaterPlants';
 
 export interface GameProps { onExit: () => void; arg?: string }
 
@@ -68,6 +75,13 @@ const RENDERS: Record<string, (p: GameProps) => ReactNode> = {
   'blow-balloon': (p) => <BlowBalloon {...p} />,
   'blow-bubbles': (p) => <BlowBubbles {...p} />,
   'blow-boat': (p) => <BlowBoat {...p} />,
+  // Thực hành cuộc sống + Giác quan (Montessori)
+  'pour-water': (p) => <PourWater {...p} />,
+  'size-order': (p) => <SizeOrder {...p} />,
+  'tidy-up': (p) => <TidyUp {...p} />,
+  'half-match': (p) => <HalfMatch {...p} />,
+  'fasten': (p) => <Fasten {...p} />,
+  'water-plants': (p) => <WaterPlants {...p} />,
 };
 
 export const GAMES: GameEntry[] = GAME_META.map((m) => ({ ...m, render: RENDERS[m.id] }));

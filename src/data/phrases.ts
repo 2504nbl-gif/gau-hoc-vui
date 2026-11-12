@@ -4,6 +4,7 @@
 // Câu ghép (vd "Bé tìm" + "Con mèo") được phát nối tiếp bằng sayAll(), nên chỉ cần thu từng mảnh.
 
 import { MONTESSORI_NAMES } from './montessori';
+import { PRACTICAL_NAMES } from './practical';
 
 export const DEFAULT_CHILD = 'Gấu';
 
@@ -129,6 +130,20 @@ export const PHRASES = {
   bubbleDone: 'Giỏi quá, bé chạm nổ nhiều bong bóng rồi!',
   boatHint: 'Bé thổi cho thuyền sang bờ bên kia nhé!',
   boatDone: 'Thuyền cập bến rồi!',
+  // Thực hành cuộc sống + Giác quan (Montessori, bé 3 tuổi): Rót nước, Xếp to–nhỏ, Dọn đồ, Ghép nửa hình, Cài cúc/kéo khóa, Tưới cây
+  pourHint: 'Bé chạm giữ bình nước để rót, tới vạch thì thả tay nhé!',
+  pourMore: 'Chưa tới vạch, bé rót thêm chút nữa nào!',
+  pourOver: 'Ôi, nhiều quá rồi! Mình rót lại nhé!',
+  pourSpill: 'Ối, nước tràn rồi! Mình rót từ từ thôi nhé!',
+  sizeDescHint: 'Bé xếp từ to đến nhỏ nhé!',
+  sizeAscHint: 'Bé xếp từ nhỏ đến to nhé!',
+  tidyHint: 'Bé dọn đồ về đúng chỗ nhé!',
+  halfHint: 'Bé ghép nửa còn lại cho đủ hình nhé!',
+  buttonHint: 'Bé kéo cúc vào khuyết áo nhé!',
+  zipHint: 'Bé kéo khóa từ dưới lên nhé!',
+  waterHint: 'Bé kéo bình tưới tới chậu cây, giữ yên để tưới nhé!',
+  waterEnough: 'Cây đủ nước rồi, mình tưới cây khác nhé!',
+  practicalNames: PRACTICAL_NAMES,
 } as const;
 
 /** Tên các trò chơi (đọc khi bé chạm vào). Được điền thêm từ danh sách trò chơi. */

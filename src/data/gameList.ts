@@ -40,6 +40,13 @@ export const GAME_META: GameMeta[] = [
   { id: 'blow-balloon', module: 'fine-motor', title: 'Thổi bóng bay', icon: '🎈', note: 'Tập thổi: bóng to dần rồi nổ', color: 'coral' },
   { id: 'blow-bubbles', module: 'fine-motor', title: 'Thổi bong bóng', icon: '🫧', note: 'Tập thổi, chạm cho bóng nổ', color: 'grape' },
   { id: 'blow-boat', module: 'fine-motor', title: 'Thổi thuyền giấy', icon: '⛵', note: 'Tập thổi: thuyền sang bờ', color: 'sea' },
+  // Thực hành cuộc sống + Giác quan (Montessori, bé 3 tuổi) — features/practical
+  { id: 'pour-water', module: 'fine-motor', title: 'Rót nước', icon: '🥛', note: 'Giữ bình, rót tới đúng vạch', color: 'sky' },
+  { id: 'fasten', module: 'fine-motor', title: 'Cài cúc, kéo khóa', icon: '🧥', note: 'Kéo cúc vào khuyết, kéo khóa lên', color: 'sea' },
+  { id: 'water-plants', module: 'fine-motor', title: 'Tưới cây', icon: '🌷', note: 'Tưới cây héo cho nở hoa', color: 'leaf' },
+  { id: 'size-order', module: 'observation', title: 'Xếp từ to đến nhỏ', icon: '🐻', note: 'Xếp theo thứ tự to dần, nhỏ dần', color: 'coral' },
+  { id: 'tidy-up', module: 'observation', title: 'Dọn đồ đúng chỗ', icon: '🧸', note: 'Đồ chơi, quần áo, đồ ăn về đúng nơi', color: 'teal' },
+  { id: 'half-match', module: 'observation', title: 'Ghép nửa hình', icon: '🦋', note: 'Tìm nửa còn lại của hình', color: 'grape' },
   // Tư duy — Ghi nhớ
   { id: 'memory-2x2', module: 'memory', title: 'Lật thẻ dễ', icon: '🃏', note: '2 × 2 · 2 cặp', color: 'leaf', arg: '2x2' },
   { id: 'memory-2x3', module: 'memory', title: 'Lật thẻ vừa', icon: '🎴', note: '2 × 3 · 3 cặp', color: 'sun', arg: '2x3' },

@@ -17,6 +17,8 @@ const THINK_GAMES = ['shadow-match', 'hidden-count', 'sequence', 'color-tower', 
   'sock-pair', 'cup-shuffle', 'curtain', 'hammer-nails'];
 /** Toán, nhạc, vẽ. */
 const SKILL_GAMES = ['egg-count', 'flower-pot', 'trace-shapes', 'piano-drag', 'sound-quiz', 'big-small'];
+// Thực hành cuộc sống + Giác quan (Montessori, bé 3 tuổi)
+THINK_GAMES.push('pour-water', 'size-order', 'tidy-up', 'half-match', 'fasten', 'water-plants');
 
 /** Ngày theo giờ máy, dạng 2026-11-04. */
 export function dayKey(d = new Date()): string {
