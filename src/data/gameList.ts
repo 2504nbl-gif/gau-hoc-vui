@@ -75,4 +75,11 @@ export const GAME_META: GameMeta[] = [
   { id: 'maze', module: 'fine-motor', title: 'Mê cung', icon: '🍯', note: 'Đưa gấu đi tới hũ mật ong', color: 'leaf' },
   { id: 'whats-missing', module: 'memory', title: 'Thiếu bạn nào?', icon: '👀', note: 'Nhìn kỹ, bạn nào trốn mất?', color: 'coral' },
   { id: 'story-order', module: 'language-games', title: 'Chuyện gì trước, chuyện gì sau?', icon: '🌻', note: 'Xếp 3 tranh theo thứ tự 1-2-3', color: 'leaf' },
+  // Nhóm trò 3 tuổi — Toán sớm, Ngôn ngữ, Cảm xúc (features/early)
+  { id: 'share-treats', module: 'math', title: 'Chia kẹo cho bạn', icon: '🍭', note: 'Mỗi bạn một cái, đặt và đếm', color: 'peach' },
+  { id: 'balance-scale', module: 'math', title: 'Cân thăng bằng', icon: '🐭', note: 'Bên nào nặng hơn, nhẹ hơn?', color: 'grape' },
+  { id: 'count-touch', module: 'math', title: 'Đếm và chọn số', icon: '🐞', note: 'Chạm từng bạn để đếm, rồi chọn số', color: 'sea' },
+  { id: 'where-bear', module: 'language-games', title: 'Ở đâu thế?', icon: '🧸', note: 'Trên, dưới, trong, cạnh', color: 'leaf' },
+  { id: 'opposites', module: 'language-games', title: 'Trái ngược', icon: '🌙', note: 'To – nhỏ, nóng – lạnh, ngày – đêm', color: 'berry' },
+  { id: 'how-feel', module: 'language-games', title: 'Bạn thấy thế nào?', icon: '😀', note: 'Vui, buồn, sợ, giận, ngạc nhiên', color: 'sun' },
 ];

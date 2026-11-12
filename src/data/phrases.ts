@@ -6,6 +6,7 @@
 import { MONTESSORI_NAMES } from './montessori';
 import { PRACTICAL_NAMES } from './practical';
 import { LOGIC_NAMES } from './logic';
+import { EARLY_NAMES } from './early';
 
 export const DEFAULT_CHILD = 'Gấu';
 
@@ -155,6 +156,24 @@ export const PHRASES = {
   missAsk: 'Bạn nào trốn mất rồi nhỉ?',
   orderHint: 'Chuyện gì trước, chuyện gì sau? Bé xếp tranh theo thứ tự nhé!',
   logicNames: LOGIC_NAMES,
+  // Nhóm trò 3 tuổi — Toán sớm, Ngôn ngữ, Cảm xúc (features/early): Chia kẹo, Cân thăng bằng, Đếm và chọn số, Ở đâu thế?, Trái ngược, Bạn thấy thế nào?
+  /** "Bé chia cho mỗi bạn" + NUMBER_WORDS[n] + tên đồ ("Kẹo mút") — ghép bằng sayAll. */
+  shareHint: 'Bé chia cho mỗi bạn',
+  shareFull: 'Bạn này có đủ rồi!',
+  shareDone: 'Bạn nào cũng có phần rồi!',
+  heavierAsk: 'Bên nào nặng hơn?',
+  lighterAsk: 'Bên nào nhẹ hơn?',
+  /** "Con voi" + "nặng hơn" / "Con chuột" + "nhẹ hơn". */
+  heavier: 'nặng hơn',
+  lighter: 'nhẹ hơn',
+  countTouchHint: 'Bé chạm vào từng bạn để đếm nhé!',
+  countPickHint: 'Có tất cả bao nhiêu? Bé chọn số đúng nhé!',
+  /** "Trái ngược với" + "To" + "là gì nhỉ?". */
+  oppositePre: 'Trái ngược với',
+  oppositePost: 'là gì nhỉ?',
+  feelAsk: 'Bạn gấu thấy thế nào?',
+  /** Câu vị trí ("Gấu ở trên bàn"), từ trái nghĩa, tình huống và câu gọi tên cảm xúc. */
+  earlyNames: EARLY_NAMES,
 } as const;
 
 /** Tên các trò chơi (đọc khi bé chạm vào). Được điền thêm từ danh sách trò chơi. */

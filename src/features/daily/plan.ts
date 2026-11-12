@@ -21,6 +21,9 @@ const THINK_GAMES = ['shadow-match', 'hidden-count', 'sequence', 'color-tower', 
 const SKILL_GAMES = ['egg-count', 'flower-pot', 'trace-shapes', 'piano-drag', 'sound-quiz', 'big-small'];
 // Thực hành cuộc sống + Giác quan (Montessori, bé 3 tuổi)
 THINK_GAMES.push('pour-water', 'size-order', 'tidy-up', 'half-match', 'fasten', 'water-plants');
+// Nhóm trò 3 tuổi (features/early): ngôn ngữ + cảm xúc vào chặng tư duy, toán sớm vào chặng kỹ năng.
+THINK_GAMES.push('where-bear', 'opposites', 'how-feel');
+SKILL_GAMES.push('share-treats', 'balance-scale', 'count-touch');
 
 /** Ngày theo giờ máy, dạng 2026-11-04. */
 export function dayKey(d = new Date()): string {

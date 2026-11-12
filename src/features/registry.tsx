@@ -39,6 +39,11 @@ import { Jigsaw } from './logic/Jigsaw';
 import { MazeGame } from './logic/MazeGame';
 import { WhatsMissing } from './logic/WhatsMissing';
 import { StoryOrder } from './logic/StoryOrder';
+// Nhóm trò 3 tuổi — Toán sớm, Ngôn ngữ, Cảm xúc
+import { ShareTreats } from './early/ShareTreats';
+import { BalanceScale } from './early/BalanceScale';
+import { CountTouch } from './early/CountTouch';
+import { HowFeel, Opposites, WhereBear } from './early/choiceGames';
 
 export interface GameProps { onExit: () => void; arg?: string }
 
@@ -94,6 +99,13 @@ const RENDERS: Record<string, (p: GameProps) => ReactNode> = {
   'maze': (p) => <MazeGame {...p} />,
   'whats-missing': (p) => <WhatsMissing {...p} />,
   'story-order': (p) => <StoryOrder {...p} />,
+  // Nhóm trò 3 tuổi — Toán sớm, Ngôn ngữ, Cảm xúc (features/early)
+  'share-treats': (p) => <ShareTreats {...p} />,
+  'balance-scale': (p) => <BalanceScale {...p} />,
+  'count-touch': (p) => <CountTouch {...p} />,
+  'where-bear': (p) => <WhereBear {...p} />,
+  'opposites': (p) => <Opposites {...p} />,
+  'how-feel': (p) => <HowFeel {...p} />,
 };
 
 export const GAMES: GameEntry[] = GAME_META.map((m) => ({ ...m, render: RENDERS[m.id] }));
